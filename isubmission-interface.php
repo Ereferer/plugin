@@ -104,7 +104,7 @@ function curl( $apy_key, $data ) {
 
 	$data_json = json_encode( $data );
 
-	$curl = curl_init( 'http://ereferer.loc/partners.html' );
+	$curl = curl_init( 'http://prod.ereferer.fr/partners.html' );
 	curl_setopt( $curl, CURLOPT_HTTPHEADER, array(
 		'Content-Type: application/json',
 		'Authorization: Bearer ' . $apy_key
