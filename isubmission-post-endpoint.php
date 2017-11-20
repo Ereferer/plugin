@@ -53,7 +53,7 @@ class Isubmission_Post_Endpoint {
 
 		$this->insert_row( $post_id );
 
-		/*$featured_image_result = $this->add_post_featured_image( $post_id, 'http://s.w.org/style/images/wp-header-logo.png' );
+		$featured_image_result = $this->add_post_featured_image( $post_id, $data['front_image'] );
 
 		if ( true !== $featured_image_result && is_string( $featured_image_result ) ) {
 
@@ -63,7 +63,7 @@ class Isubmission_Post_Endpoint {
 			) );
 
 			return;
-		}*/
+		}
 
 		wp_send_json( array(
 			'status'  => true,
