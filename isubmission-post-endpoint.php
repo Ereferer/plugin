@@ -53,6 +53,18 @@ class Isubmission_Post_Endpoint {
 
 		$this->insert_row( $post_id );
 
+		/*$featured_image_result = $this->add_post_featured_image( $post_id, 'http://s.w.org/style/images/wp-header-logo.png' );
+
+		if ( true !== $featured_image_result && is_string( $featured_image_result ) ) {
+
+			wp_send_json( array(
+				'status'  => false,
+				'message' => $featured_image_result
+			) );
+
+			return;
+		}*/
+
 		wp_send_json( array(
 			'status'  => true,
 			'message' => __( 'Success', ISUBMISSION_ID_LANGUAGES )
@@ -128,6 +140,38 @@ class Isubmission_Post_Endpoint {
 		}
 
 		return null;
+	}
+
+	private function add_post_featured_image( $post_id, $img_url ) {
+
+		if ( ! function_exists( 'media_handle_upload' ) ) {
+
+			require_once( ABSPATH . "wp-admin" . '/includes/image.php' );
+			require_once( ABSPATH . "wp-admin" . '/includes/file.php' );
+			require_once( ABSPATH . "wp-admin" . '/includes/media.php' );
+		}
+
+		$file_array = array();
+		$tmp        = download_url( $img_url );
+		preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $img_url, $matches );
+		$file_array['name']     = basename( $matches[0] );
+		$file_array['tmp_name'] = $tmp;
+
+		// upload file
+		$id = media_handle_sideload( $file_array, $post_id );
+
+		// errors
+		if ( is_wp_error( $id ) ) {
+
+			@unlink( $file_array['tmp_name'] );
+
+			return $id->get_error_messages();
+		}
+
+		// remove temporary file
+		@unlink( $file_array['tmp_name'] );
+
+		return set_post_thumbnail( $post_id, $id );
 	}
 }
 
