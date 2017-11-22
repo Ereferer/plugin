@@ -123,6 +123,11 @@ function curl( $apy_key, $data ) {
 
 function isubmission_add_external_rule() {
 
+	// is titan framework loaded
+	if ( ! class_exists( 'TitanFramework' ) ) {
+		return;
+	}
+
 	global $wp_rewrite;
 
 	$api_url = plugins_url( 'isubmission-post-endpoint.php', __FILE__ );
