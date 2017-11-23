@@ -84,6 +84,3 @@ if ( ! function_exists( 'isubmission_get_version' ) ) {
     }
 }
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
-//require plugin_dir_path( __FILE__ ) . 'class/class-isubmission-post-endpoint.php';
-//require plugin_dir_path( __FILE__ ) . 'my-api.php';
