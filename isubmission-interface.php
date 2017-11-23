@@ -49,7 +49,7 @@ function isubmission_create_options() {
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     $dashboardTab->createOption( array(
         'type'      => 'save',
-        'save'      => __( 'Save Changes', ISUBMISSION_ID_LANGUAGES ),
+        'save'      => __( 'Sauvegardez les changements', ISUBMISSION_ID_LANGUAGES ),
 		'use_reset' => false,
     ) );
 	

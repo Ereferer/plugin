@@ -16,9 +16,9 @@ $dashboardTab->createOption( array(
 // ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'    => 'isubmission_api_key',
-	'name'  => __( 'Api key', ISUBMISSION_ID_LANGUAGES ),
+	'name'  => __( 'Clé API', ISUBMISSION_ID_LANGUAGES ),
 	'type'  => 'text',
-	'desc'  => __( 'Fill in your Api key', ISUBMISSION_ID_LANGUAGES ),
+	'desc'  => __( 'Renseignez votre clé (API)', ISUBMISSION_ID_LANGUAGES ),
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(
@@ -28,9 +28,9 @@ $dashboardTab->createOption( array(
 // ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'    => 'isubmission_categories',
-	'name'  => __( 'Authorized Categories for Editors', ISUBMISSION_ID_LANGUAGES ),
+	'name'  => __( 'Catégories autorisées pour les rédacteurs', ISUBMISSION_ID_LANGUAGES ),
     'type'  => 'multicheck-categories',
-    'desc'  =>  __( 'select at least one category', ISUBMISSION_ID_LANGUAGES ),
+    'desc'  =>  __( 'Sélectionnez au moins uno catégorie', ISUBMISSION_ID_LANGUAGES ),
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(
@@ -41,13 +41,13 @@ $dashboardTab->createOption( array(
 // ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'      => 'isubmission_post_status',
-	'name'    => __( 'Post status', ISUBMISSION_ID_LANGUAGES ),
+	'name'    => __( 'Statut des articles envoyés', ISUBMISSION_ID_LANGUAGES ),
 	'options' => array(
-		'publish' => __( 'Published (recommended)', ISUBMISSION_ID_LANGUAGES ),
-		'pending' => __( 'Pending Review', ISUBMISSION_ID_LANGUAGES ),
+		'publish' => __( 'Directement publié (recommandé):', ISUBMISSION_ID_LANGUAGES ),
+		'pending' => __( 'En attente de relecture:', ISUBMISSION_ID_LANGUAGES ),
 	),
 	'type'    => 'radio',
-	'desc'    => __( 'ATTENTION!', ISUBMISSION_ID_LANGUAGES ),
+	'desc'    => __( 'ATTENTION! Si vous choisissez le statut "en attente de relecture", vous ne disposez que de 15 jours pour valider l\'article. Passé ce délai, vorte site passera en inactif sur Ereferer et sera désactivé.', ISUBMISSION_ID_LANGUAGES ),
 	'default' => 'publish'
 ) );
 // ----------------------------------------
