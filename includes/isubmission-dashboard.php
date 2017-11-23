@@ -34,16 +34,21 @@ $dashboardTab->createOption( array(
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(
-	'id'    => 'isubmission_website_url',
-	'name'  => __( 'Website URL', ISUBMISSION_ID_LANGUAGES ),
-	'type'  => 'text',
-	'desc'  =>  get_site_url(),
-) );
-// ----------------------------------------
-$dashboardTab->createOption( array(
 	'id'     => 'isubmission_endpoint',
 	'type'   => 'text',
 	'hidden' => true
+) );
+// ----------------------------------------
+$dashboardTab->createOption( array(
+	'id'      => 'isubmission_post_status',
+	'name'    => __( 'Post status', ISUBMISSION_ID_LANGUAGES ),
+	'options' => array(
+		'publish' => __( 'Published (recommended)', ISUBMISSION_ID_LANGUAGES ),
+		'pending' => __( 'Pending Review', ISUBMISSION_ID_LANGUAGES ),
+	),
+	'type'    => 'radio',
+	'desc'    => __( 'ATTENTION!', ISUBMISSION_ID_LANGUAGES ),
+	'default' => 'publish'
 ) );
 // ----------------------------------------
 
@@ -61,7 +66,6 @@ if (!function_exists("isubmission_admin_notice_error")) {
 //     Check if options are not empty    -=
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 if (empty($isubmission_options->getOption( 'isubmission_categories' ))
-	|| empty($isubmission_options->getOption( 'isubmission_website_url' ))
 	|| empty($isubmission_options->getOption( 'isubmission_api_key' ))
 ) {
 	// WP Alert

@@ -2,8 +2,16 @@
 
 require_once '../../../wp-load.php';
 require_once 'lib/titan-framework/titan-framework-embedder.php';
+require_once 'class/class-isubmission-import-external-images.php';
 
 class Isubmission_Post_Endpoint {
+
+	private $isubmission_options;
+
+	public function __construct() {
+
+		$this->isubmission_options = TitanFramework::getInstance( 'isubmission' );
+	}
 
 	public function run() {
 
@@ -33,12 +41,14 @@ class Isubmission_Post_Endpoint {
 			return;
 		}
 
+		$post_status = $this->isubmission_options->getOption( 'isubmission_api_key' );
+
 		$post_id = wp_insert_post( array(
-			'post_title'   => $data['post_title'],
-			'post_content' => $data['post_content'],
-			'post_status'  => 'publish',
+			'post_title'    => $data['post_title'],
+			'post_content'  => $data['post_content'],
+			'post_status'   => empty( $post_status ) ? 'publish' : $post_status,
 			//'post_author'  => 1,//get_current_user_id(),
-			'post_category' => !empty($data['categories']) ? $data['categories']:[]
+			'post_category' => ! empty( $data['categories'] ) ? $data['categories'] : []
 		) );
 
 		if ( empty( $post_id ) || is_wp_error( $post_id ) ) {
@@ -51,9 +61,20 @@ class Isubmission_Post_Endpoint {
 			return;
 		}
 
-		$this->insert_row( $post_id );
+		$import_external_images = new Isubmission_Import_External_Images();
+		$import_result          = $import_external_images->import_content_images( $post_id );
 
-		$featured_image_result = $this->add_post_featured_image( $post_id, $data['front_image'] );
+		if ( is_string( $import_result ) ) {
+
+			wp_send_json( array(
+				'status'  => false,
+				'message' => $import_result
+			) );
+
+			return;
+		}
+
+		$featured_image_result = $import_external_images->sideload( $post_id, $data['front_image'] );
 
 		if ( true !== $featured_image_result && is_string( $featured_image_result ) ) {
 
@@ -65,6 +86,22 @@ class Isubmission_Post_Endpoint {
 			return;
 		}
 
+		set_post_thumbnail( $post_id, $featured_image_result );
+
+		if ( ! empty( $data['meta_title'] ) ) {
+			add_post_meta( $post_id, 'isubmission_meta_title', $data['meta_title'] );
+		}
+
+		if ( ! empty( $data['meta_description'] ) ) {
+			add_post_meta( $post_id, 'isubmission_meta_description', $data['meta_description'] );
+		}
+
+		if ( ! empty( $data['custom_field'] ) ) {
+			add_post_meta( $post_id, 'isubmission_image_source', $data['custom_field'] );
+		}
+
+		$this->insert_row( $post_id );
+
 		wp_send_json( array(
 			'status'  => true,
 			'message' => __( 'Success', ISUBMISSION_ID_LANGUAGES )
@@ -75,8 +112,7 @@ class Isubmission_Post_Endpoint {
 
 		$bearer_token = $this->get_bearer_token();
 
-		$isubmission_options = TitanFramework::getInstance( 'isubmission' );
-		$apy_key = $isubmission_options->getOption( 'isubmission_api_key' );
+		$apy_key = $this->isubmission_options->getOption( 'isubmission_api_key' );
 
 		return ( ! empty( $bearer_token ) && ! empty( $apy_key ) && $bearer_token === $apy_key );
 	}
@@ -140,38 +176,6 @@ class Isubmission_Post_Endpoint {
 		}
 
 		return null;
-	}
-
-	private function add_post_featured_image( $post_id, $img_url ) {
-
-		if ( ! function_exists( 'media_handle_upload' ) ) {
-
-			require_once( ABSPATH . "wp-admin" . '/includes/image.php' );
-			require_once( ABSPATH . "wp-admin" . '/includes/file.php' );
-			require_once( ABSPATH . "wp-admin" . '/includes/media.php' );
-		}
-
-		$file_array = array();
-		$tmp        = download_url( $img_url );
-		preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $img_url, $matches );
-		$file_array['name']     = basename( $matches[0] );
-		$file_array['tmp_name'] = $tmp;
-
-		// upload file
-		$id = media_handle_sideload( $file_array, $post_id );
-
-		// errors
-		if ( is_wp_error( $id ) ) {
-
-			@unlink( $file_array['tmp_name'] );
-
-			return $id->get_error_messages();
-		}
-
-		// remove temporary file
-		@unlink( $file_array['tmp_name'] );
-
-		return set_post_thumbnail( $post_id, $id );
 	}
 }
 

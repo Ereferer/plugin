@@ -62,18 +62,16 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 
 	$apy_key     = $isubmission_options->getOption( 'isubmission_api_key' );
 	$categories  = $isubmission_options->getOption( 'isubmission_categories' );
-	$website_url = $isubmission_options->getOption( 'isubmission_website_url' );
 	$endpoint    = $isubmission_options->getOption( 'isubmission_endpoint' );
 
-	if ( empty( $apy_key ) || empty( $website_url ) || empty( $categories ) || empty( $endpoint ) ) {
+	if ( empty( $apy_key ) || empty( $categories ) || empty( $endpoint ) ) {
 		return;
 	}
 
 	$data = array(
-		'website_url' => $website_url,
+		'website_url' => get_site_url(),
 		'plugin_url'  => $endpoint,
 		'categories'  => array(),
-//		'endpoint'    => $endpoint
 	);
 
 	if ( ! empty( $categories ) ) {
@@ -123,7 +121,7 @@ function curl( $apy_key, $data ) {
 
 function isubmission_add_external_rule() {
 
-	// is titan framework loaded
+	// is titan framework loaded - when after_setup_theme hook not triggered
 	if ( ! class_exists( 'TitanFramework' ) ) {
 		return;
 	}
@@ -136,7 +134,7 @@ function isubmission_add_external_rule() {
 	$isubmission_options = TitanFramework::getInstance( 'isubmission' );
 
 	$isubmission_endpoint = $isubmission_options->getOption( 'isubmission_endpoint' );
-	//var_dump($isubmission_endpoint);
+//	var_dump($isubmission_endpoint);
 	$isubmission_endpoint = str_replace( home_url() . '/', '', $isubmission_endpoint );
 
 	$wp_rewrite->add_external_rule( $isubmission_endpoint . '$', $api_url );
