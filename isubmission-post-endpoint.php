@@ -41,7 +41,7 @@ class Isubmission_Post_Endpoint {
 			return;
 		}
 
-		$post_status = $this->isubmission_options->getOption( 'isubmission_api_key' );
+		$post_status = $this->isubmission_options->getOption( 'isubmission_post_status' );
 
 		$post_id = wp_insert_post( array(
 			'post_title'    => $data['post_title'],
