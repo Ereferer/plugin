@@ -87,7 +87,7 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 		}
 	}
 
-	$response = curl( $apy_key, $data );
+	$response = isubmission_curl( $apy_key, $data );
 
 //	echo '<pre>';
 //	print_r( $response );
@@ -98,7 +98,7 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 
 add_action( 'tf_save_admin_isubmission', 'isubmission_save_options', 10, 3 );
 
-function curl( $apy_key, $data ) {
+function isubmission_curl( $apy_key, $data ) {
 
 	$data_json = json_encode( $data );
 
@@ -142,7 +142,7 @@ function isubmission_add_external_rule() {
 
 add_action( 'init', 'isubmission_add_external_rule' );
 
-function pre_save_admin( $container, $activeTab, $options ) {
+function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 
 	$random_endpoint = isubmission_random3() . '.php';
 
@@ -158,4 +158,4 @@ function pre_save_admin( $container, $activeTab, $options ) {
 	flush_rewrite_rules();
 }
 
-add_action( 'tf_pre_save_admin_isubmission', 'pre_save_admin', 10, 3 );
+add_action( 'tf_pre_save_admin_isubmission', 'isubmission_pre_save_admin', 10, 3 );
