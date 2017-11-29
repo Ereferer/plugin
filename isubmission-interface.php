@@ -119,29 +119,6 @@ function isubmission_curl( $apy_key, $data ) {
 	return $response;
 }
 
-function isubmission_add_external_rule() {
-
-	// is titan framework loaded - when after_setup_theme hook not triggered
-	if ( ! class_exists( 'TitanFramework' ) ) {
-		return;
-	}
-
-	global $wp_rewrite;
-
-	$api_url = plugins_url( 'isubmission-post-endpoint.php', __FILE__ );
-	$api_url = substr( $api_url, strlen( home_url() ) + 1 );
-
-	$isubmission_options = TitanFramework::getInstance( 'isubmission' );
-
-	$isubmission_endpoint = $isubmission_options->getOption( 'isubmission_endpoint' );
-//	var_dump($isubmission_endpoint);
-	$isubmission_endpoint = str_replace( home_url() . '/', '', $isubmission_endpoint );
-
-	$wp_rewrite->add_external_rule( $isubmission_endpoint . '$', $api_url );
-}
-
-add_action( 'init', 'isubmission_add_external_rule' );
-
 function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 
 	$random_endpoint = isubmission_random3() . '.php';
