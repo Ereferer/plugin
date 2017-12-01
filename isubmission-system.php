@@ -29,7 +29,7 @@ if ( ! function_exists('isubmission_install') ) {
 		$sql = "CREATE TABLE $table_name_isub (
 				id int(11) NOT NULL AUTO_INCREMENT,
 				post_id int(11) NOT NULL,
-				date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				`date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				image int(11) DEFAULT NULL,
 				PRIMARY KEY (id)
 			   ) $charset_collate;
