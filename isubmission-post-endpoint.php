@@ -89,11 +89,11 @@ class Isubmission_Post_Endpoint {
 		set_post_thumbnail( $post_id, $featured_image_result );
 
 		if ( ! empty( $data['meta_title'] ) ) {
-			add_post_meta( $post_id, 'isubmission_meta_title', $data['meta_title'] );
+			add_post_meta( $post_id, '_isubmission_meta_title', $data['meta_title'] );
 		}
 
 		if ( ! empty( $data['meta_description'] ) ) {
-			add_post_meta( $post_id, 'isubmission_meta_description', $data['meta_description'] );
+			add_post_meta( $post_id, '_isubmission_meta_description', $data['meta_description'] );
 		}
 
 		if ( ! empty( $data['custom_field'] ) ) {
