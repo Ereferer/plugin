@@ -31,6 +31,16 @@ class Isubmission_Post_Endpoint {
 //		wp_send_json( $data );
 //		return;
 
+		if ( empty( $data['id'] ) ) {
+
+			wp_send_json( array(
+				'status'  => false,
+				'message' => __( 'Post id can\'t be empty.', ISUBMISSION_ID_LANGUAGES )
+			) );
+
+			return;
+		}
+
 		if ( empty( $data['post_title'] ) || empty( $data['post_content'] ) ) {
 
 			wp_send_json( array(
@@ -51,14 +61,16 @@ class Isubmission_Post_Endpoint {
 			'post_category' => ! empty( $data['categories'] ) ? $data['categories'] : []
 		);
 
-		if ( empty( $data['id'] ) ) {
+		$internal_post_id = $this->get_post_id_by_place_post_id( $data['id'] );
 
-			$post_id = wp_insert_post( $post_data, true );
-		} else {
+		if ( $internal_post_id ) {
 
-			$post_data['ID'] = $data['id'];
+			$post_data['ID'] = $internal_post_id;
 
 			$post_id = wp_update_post( $post_data, true );
+		} else {
+
+			$post_id = wp_insert_post( $post_data, true );
 		}
 
 		if ( empty( $post_id ) || is_wp_error( $post_id ) ) {
@@ -110,7 +122,7 @@ class Isubmission_Post_Endpoint {
 			add_post_meta( $post_id, 'isubmission_image_source', $data['custom_field'] );
 		}
 
-		$this->insert_row( $post_id );
+		$this->insert_row( $post_id, $data['id'] );
 
 		wp_send_json( array(
 			'status'  => true,
@@ -127,16 +139,28 @@ class Isubmission_Post_Endpoint {
 		return ( ! empty( $bearer_token ) && ! empty( $apy_key ) && $bearer_token === $apy_key );
 	}
 
-	private function insert_row( $post_id ) {
+	private function insert_row( $post_id, $place_post_id ) {
 
 		global $wpdb, $plugin_table_isub;
 
 		return $wpdb->insert(
 			$wpdb->prefix . $plugin_table_isub,
 			array(
-				'post_id' => $post_id
+				'post_id'       => $post_id,
+				'place_post_id' => $place_post_id
 			)
 		);
+	}
+
+	private function get_post_id_by_place_post_id( $place_post_id ) {
+
+		global $wpdb, $plugin_table_isub;
+
+		return $wpdb->get_var( $wpdb->prepare( "
+			SELECT post_id
+			FROM {$wpdb->prefix}$plugin_table_isub
+			WHERE place_post_id = %d
+		", $place_post_id ) );
 	}
 
 	/**
