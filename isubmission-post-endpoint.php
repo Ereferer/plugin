@@ -43,13 +43,23 @@ class Isubmission_Post_Endpoint {
 
 		$post_status = $this->isubmission_options->getOption( 'isubmission_post_status' );
 
-		$post_id = wp_insert_post( array(
+		$post_data = array(
 			'post_title'    => $data['post_title'],
 			'post_content'  => $data['post_content'],
 			'post_status'   => empty( $post_status ) ? 'publish' : $post_status,
 			//'post_author'  => 1,//get_current_user_id(),
 			'post_category' => ! empty( $data['categories'] ) ? $data['categories'] : []
-		) );
+		);
+
+		if ( empty( $data['id'] ) ) {
+
+			$post_id = wp_insert_post( $post_data, true );
+		} else {
+
+			$post_data['ID'] = $data['id'];
+
+			$post_id = wp_update_post( $post_data, true );
+		}
 
 		if ( empty( $post_id ) || is_wp_error( $post_id ) ) {
 
