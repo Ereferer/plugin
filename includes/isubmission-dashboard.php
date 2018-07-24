@@ -4,7 +4,6 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 defined('ABSPATH') or die('Are you crazy!');
 
-
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // Create tab's dashboard                -=
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -14,11 +13,20 @@ $dashboardTab->createOption( array(
     'type'  => 'heading',
 ) );
 // ----------------------------------------
+
+$isubmission_status = '';
+
+if ( '1' === get_option( 'isubmission_status' ) ) {
+
+	$isubmission_status = '<span style="color: #00FF00;"><span style="font-size: 25px; vertical-align: middle;">&#10003;</span> Connexion successfull!</span>';
+}
+
 $dashboardTab->createOption( array(
 	'id'    => 'isubmission_api_key',
 	'name'  => __( 'Clé API', ISUBMISSION_ID_LANGUAGES ),
 	'type'  => 'text',
 	'desc'  => __( 'Renseignez votre clé (API)', ISUBMISSION_ID_LANGUAGES ),
+	'unit'  => $isubmission_status
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(

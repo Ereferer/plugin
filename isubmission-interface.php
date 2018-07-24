@@ -114,9 +114,28 @@ function isubmission_curl( $apy_key, $data ) {
 
 	$response = curl_exec( $curl );
 
+	isubmission_set_status( $curl );
+
 	curl_close( $curl );
 
 	return $response;
+}
+
+function isubmission_set_status( $curl ) {
+
+	$status = 0;
+
+	if ( ! curl_errno( $curl ) ) {
+
+		$info = curl_getinfo( $curl );
+
+		if ( ! empty( $info['http_code'] ) && 200 == $info['http_code'] ) {
+
+			$status = 1;
+		}
+	}
+
+	update_option( 'isubmission_status', $status, false );
 }
 
 function isubmission_pre_save_admin( $container, $activeTab, $options ) {

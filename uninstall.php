@@ -29,6 +29,7 @@ $options = ['isubmission_api_key'
 		   ,'isubmission_website_plugin_url'
 		   ,'isubmission_endpoint'
 		   ,'isubmission_db_version'
+		   ,'isubmission_status'
 ];
 // --------------
 foreach ( $options as $option ) {
