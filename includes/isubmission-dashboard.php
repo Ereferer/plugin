@@ -18,7 +18,10 @@ $isubmission_status = '';
 
 if ( '1' === get_option( 'isubmission_status' ) ) {
 
-	$isubmission_status = '<span style="color: #00FF00;"><span style="font-size: 25px; vertical-align: middle;">&#10003;</span> Connexion successfull!</span>';
+	$isubmission_status = '<span style="color: #00FF00;"><span style="font-size: 25px; vertical-align: middle;">&#10003;</span>' . __( 'Connexion successfull!', ISUBMISSION_ID_LANGUAGES ) . '</span>';
+} else {
+
+	$isubmission_status = '<span style="color: #FF0000;"><spawn style="font-size: 25px; vertical-align: middle;">&#10005;</spawn>' . __( 'Connexion unsuccessful!', ISUBMISSION_ID_LANGUAGES ) . '</span>';
 }
 
 $dashboardTab->createOption( array(
