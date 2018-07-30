@@ -96,19 +96,22 @@ class Isubmission_Post_Endpoint {
 			return;
 		}
 
-		$featured_image_result = $import_external_images->sideload( $post_id, $data['front_image'] );
+		if ( ! empty( $data['front_image'] ) ) {
 
-		if ( true !== $featured_image_result && is_string( $featured_image_result ) ) {
+			$featured_image_result = $import_external_images->sideload( $post_id, $data['front_image'] );
 
-			wp_send_json( array(
-				'status'  => false,
-				'message' => $featured_image_result
-			) );
+			if ( is_string( $featured_image_result ) ) {
 
-			return;
+				wp_send_json( array(
+					'status'  => false,
+					'message' => $featured_image_result
+				) );
+
+				return;
+			}
+
+			set_post_thumbnail( $post_id, $featured_image_result );
 		}
-
-		set_post_thumbnail( $post_id, $featured_image_result );
 
 		if ( ! empty( $data['meta_title'] ) ) {
 			add_post_meta( $post_id, '_isubmission_meta_title', $data['meta_title'] );

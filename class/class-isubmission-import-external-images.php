@@ -33,7 +33,10 @@ class Isubmission_Import_External_Images {
 
 			$new_img_url = wp_get_attachment_url( $new_img_id );
 
-			$post->post_content = str_replace( $img_url, $new_img_url, $post->post_content );
+			if ( ! empty( $new_img_url ) ) {
+
+				$post->post_content = str_replace( $img_url, $new_img_url, $post->post_content );
+			}
 		}
 
 		wp_update_post( array(
@@ -72,6 +75,12 @@ class Isubmission_Import_External_Images {
 	public function sideload( $post_id, $img_url ) {
 
 		preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $img_url, $matches );
+
+		if ( empty( $matches[0] ) ) {
+
+			return __( 'Pas d\'image', ISUBMISSION_ID_LANGUAGES );
+		}
+
 		$download_url = download_url( $img_url );
 
 		if ( is_wp_error( $download_url ) ) {
