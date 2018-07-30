@@ -27,7 +27,8 @@ class Isubmission_Import_External_Images {
 			$new_img_id = $this->sideload( $post_id, $img_url );
 
 			if ( is_string( $new_img_id ) ) {
-				return $new_img_id;
+				continue;
+				//return $new_img_id;
 			}
 
 			$new_img_url = wp_get_attachment_url( $new_img_id );
@@ -71,10 +72,16 @@ class Isubmission_Import_External_Images {
 	public function sideload( $post_id, $img_url ) {
 
 		preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $img_url, $matches );
+		$download_url = download_url( $img_url );
+
+		if ( is_wp_error( $download_url ) ) {
+
+			return $download_url->get_error_messages();
+		}
 
 		$file_array = array(
 			'name'     => basename( $matches[0] ),
-			'tmp_name' => download_url( $img_url )
+			'tmp_name' => $download_url
 		);
 
 		$id = media_handle_sideload( $file_array, $post_id );
