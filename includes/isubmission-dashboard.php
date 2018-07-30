@@ -62,12 +62,26 @@ $dashboardTab->createOption( array(
 	'default' => 'publish'
 ) );
 // ----------------------------------------
+$dashboardTab->createOption( array(
+	'id'     => 'isubmission_menu_name',
+	'name'  => __( 'Nom du menu', ISUBMISSION_ID_LANGUAGES ),
+	'type'   => 'text',
+) );
+// ----------------------------------------
 
 if (!function_exists("isubmission_admin_notice_error")) {
 	function isubmission_admin_notice_error() {
 		$isubmission_options = TitanFramework::getInstance( 'isubmission' );
 		$isubmission_class   = 'notice notice-error';
-		$isubmission_message = strtoupper(ISUBMISSION_NAME) . ': ' . sprintf( __( 'Fill in all <a href="%s">dashboard options</a>', ISUBMISSION_ID_LANGUAGES ), get_admin_url(get_current_blog_id(), 'admin.php?page=isubmission&tab=dashboard') ) ;
+
+		$menu_name = ISUBMISSION_NAME;
+		$isubmission_current_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+
+		if ( ! empty( $isubmission_current_options['isubmission_menu_name'] ) ) {
+			$menu_name = $isubmission_current_options['isubmission_menu_name'];
+		}
+
+		$isubmission_message = strtoupper($menu_name) . ': ' . sprintf( __( 'Fill in all <a href="%s">dashboard options</a>', ISUBMISSION_ID_LANGUAGES ), get_admin_url(get_current_blog_id(), 'admin.php?page=isubmission&tab=dashboard') ) ;
 	
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $isubmission_class ), $isubmission_message ); 
 	}

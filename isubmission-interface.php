@@ -17,9 +17,16 @@ function isubmission_create_options() {
     /***************************************************************
      * Create option menu item
      ***************************************************************/
+	$menu_name = ISUBMISSION_NAME;
+	$isubmission_current_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+
+	if ( ! empty( $isubmission_current_options['isubmission_menu_name'] ) ) {
+		$menu_name = $isubmission_current_options['isubmission_menu_name'];
+	}
+
     $isubmission_panel = $isubmission_options->createAdminPanel( array(
-        'name'       => ISUBMISSION_NAME,
-		'title'      => ISUBMISSION_NAME . ' <a class="add-new-h2" href="./admin.php?page=isubmission_list">' . __( 'All items', ISUBMISSION_ID_LANGUAGES ) . '</a>',
+        'name'       => $menu_name,
+		'title'      => $menu_name . ' <a class="add-new-h2" href="./admin.php?page=isubmission_list">' . __( 'All items', ISUBMISSION_ID_LANGUAGES ) . '</a>',
         'icon'       => 'dashicons-upload',
         'id'         => ISUBMISSION_ID,
 		'capability' => 'manage_options',
