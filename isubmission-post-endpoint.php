@@ -113,12 +113,26 @@ class Isubmission_Post_Endpoint {
 			set_post_thumbnail( $post_id, $featured_image_result );
 		}
 
+		$is_yoast_active = self::is_yoast_active();
+
 		if ( ! empty( $data['meta_title'] ) ) {
+
 			add_post_meta( $post_id, '_isubmission_meta_title', $data['meta_title'] );
+
+			if ( $is_yoast_active ) {
+
+				update_post_meta( $post_id, '_yoast_wpseo_title', $data['meta_title'] );
+			}
 		}
 
 		if ( ! empty( $data['meta_description'] ) ) {
+
 			add_post_meta( $post_id, '_isubmission_meta_description', $data['meta_description'] );
+
+			if ( $is_yoast_active ) {
+
+				update_post_meta( $post_id, '_yoast_wpseo_metadesc', $data['meta_description'] );
+			}
 		}
 
 		if ( ! empty( $data['custom_field'] ) ) {
@@ -131,6 +145,18 @@ class Isubmission_Post_Endpoint {
 			'status'  => true,
 			'message' => __( 'Success', ISUBMISSION_ID_LANGUAGES )
 		) );
+	}
+
+	public function is_yoast_active() {
+
+		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+		if ( is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private function is_bearer_token_valid() {
