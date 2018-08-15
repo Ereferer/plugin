@@ -142,8 +142,9 @@ class Isubmission_Post_Endpoint {
 		$this->insert_row( $post_id, $data['id'] );
 
 		wp_send_json( array(
-			'status'  => true,
-			'message' => __( 'Success', ISUBMISSION_ID_LANGUAGES )
+			'status'      => true,
+			'message'     => __( 'Success', ISUBMISSION_ID_LANGUAGES ),
+			'article_url' => get_permalink( $post_id )
 		) );
 	}
 
