@@ -65,6 +65,16 @@ class Isubmission_Post_Endpoint {
 
 		if ( $internal_post_id ) {
 
+			if ( 'yes' !== $this->isubmission_options->getOption( 'isubmission_is_posts_editable' ) ) {
+
+				wp_send_json( array(
+					'status'  => false,
+					'message' => __( 'Posts are not editable.', ISUBMISSION_ID_LANGUAGES )
+				) );
+
+				return;
+			}
+
 			$post_data['ID'] = $internal_post_id;
 
 			$post_id = wp_update_post( $post_data, true );

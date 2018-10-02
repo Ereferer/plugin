@@ -68,6 +68,18 @@ $dashboardTab->createOption( array(
 	'type'   => 'text',
 ) );
 // ----------------------------------------
+$dashboardTab->createOption( array(
+	'id'      => 'isubmission_is_posts_editable',
+	'name'    => __( 'Modification possible?', ISUBMISSION_ID_LANGUAGES ),
+	'options' => array(
+		'yes' => __( 'Yes', ISUBMISSION_ID_LANGUAGES ),
+		'no'  => __( 'No', ISUBMISSION_ID_LANGUAGES ),
+	),
+	'type'    => 'radio',
+	'desc'    => __( 'Partner will be able to do small correction to their article. Nevertheless and to prevent abuse, they could not add new link or modify an existing link.', ISUBMISSION_ID_LANGUAGES ),
+	'default' => 'yes'
+) );
+// ----------------------------------------
 
 if (!function_exists("isubmission_admin_notice_error")) {
 	function isubmission_admin_notice_error() {
