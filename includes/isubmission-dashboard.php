@@ -13,7 +13,6 @@ $dashboardTab->createOption( array(
     'type'  => 'heading',
 ) );
 // ----------------------------------------
-
 $isubmission_status = '';
 
 if ( '1' === get_option( 'isubmission_status' ) ) {
@@ -21,7 +20,7 @@ if ( '1' === get_option( 'isubmission_status' ) ) {
 	$isubmission_status = '<span style="color: #00FF00;"><span style="font-size: 25px; vertical-align: middle;">&#10003;</span>' . __( 'Connexion successfull!', ISUBMISSION_ID_LANGUAGES ) . '</span>';
 } else {
 
-	$isubmission_status = '<span style="color: #FF0000;"><spawn style="font-size: 25px; vertical-align: middle;">&#10005;</spawn>' . __( 'Connexion unsuccessful!', ISUBMISSION_ID_LANGUAGES ) . '</span>';
+	$isubmission_status = '<span style="color: #FF0000;"><span style="font-size: 25px; vertical-align: middle;">&#10005;</span>' . __( 'Connexion unsuccessful!', ISUBMISSION_ID_LANGUAGES ) . '</span>';
 }
 
 $dashboardTab->createOption( array(
@@ -37,11 +36,22 @@ $dashboardTab->createOption( array(
     'type'  => 'heading',
 ) );
 // ----------------------------------------
+$isubmission_current_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+
+if ( empty( $isubmission_current_options['isubmission_categories'] ) ) {
+
+	$dashboardTab->createOption( array(
+		'type' => 'note',
+		'desc' => '<span style="color: #FF0000;">' . __( 'Please tick at least 1 category.', ISUBMISSION_ID_LANGUAGES ) . '</span>'
+	) );
+}
+
 $dashboardTab->createOption( array(
-	'id'    => 'isubmission_categories',
-	'name'  => __( 'Catégories autorisées pour les rédacteurs', ISUBMISSION_ID_LANGUAGES ),
-    'type'  => 'multicheck-categories',
-    'desc'  =>  __( 'Sélectionnez au moins uno catégorie', ISUBMISSION_ID_LANGUAGES ),
+	'id'   => 'isubmission_categories',
+	'name' => __( 'Catégories autorisées pour les rédacteurs', ISUBMISSION_ID_LANGUAGES ),
+	'type' => 'multicheck-categories',
+	'desc' => __( 'Sélectionnez au moins uno catégorie', ISUBMISSION_ID_LANGUAGES ),
+	'select_all' => true
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(

@@ -24,14 +24,14 @@ function isubmission_create_options() {
 		$menu_name = $isubmission_current_options['isubmission_menu_name'];
 	}
 
-    $isubmission_panel = $isubmission_options->createAdminPanel( array(
-        'name'       => $menu_name,
-		'title'      => $menu_name . ' <a class="add-new-h2" href="./admin.php?page=isubmission_list">' . __( 'All items', ISUBMISSION_ID_LANGUAGES ) . '</a>',
-        'icon'       => 'dashicons-upload',
-        'id'         => ISUBMISSION_ID,
+	$isubmission_panel = $isubmission_options->createAdminPanel( array(
+		'menu_title' => $menu_name,
+		'name'       => $menu_name . ' <a class="add-new-h2" href="./admin.php?page=isubmission_list">' . __( 'All items', ISUBMISSION_ID_LANGUAGES ) . '</a>',
+		'icon'       => 'dashicons-upload',
+		'id'         => ISUBMISSION_ID,
 		'capability' => 'manage_options',
 		'desc'       => '',
-            ) );
+	) );
 	
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // Create option panel tabs              -=
@@ -39,7 +39,7 @@ function isubmission_create_options() {
     $dashboardTab = $isubmission_panel->createTab( array(
         'name' => __( 'Options', ISUBMISSION_ID_LANGUAGES ),
         'id'   => 'dashboard',
-            ) );
+    ) );
 			
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	// Create tab's plugin                   -=
