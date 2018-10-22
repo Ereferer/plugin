@@ -31,131 +31,140 @@ class Isubmission_Post_Endpoint {
 //		wp_send_json( $data );
 //		return;
 
-		if ( empty( $data['id'] ) ) {
+		if ( ! empty( $data['test_connection'] ) ) {
 
 			wp_send_json( array(
-				'status'  => false,
-				'message' => __( 'Post id can\'t be empty.', ISUBMISSION_ID_LANGUAGES )
+				'status'      => true,
+				'message'     => __( 'Success connection', ISUBMISSION_ID_LANGUAGES ),
 			) );
-
-			return;
-		}
-
-		if ( empty( $data['post_title'] ) || empty( $data['post_content'] ) ) {
-
-			wp_send_json( array(
-				'status'  => false,
-				'message' => __( 'Post title and content can\'t be empty.', ISUBMISSION_ID_LANGUAGES )
-			) );
-
-			return;
-		}
-
-		$post_status = $this->isubmission_options->getOption( 'isubmission_post_status' );
-
-		$post_data = array(
-			'post_title'    => $data['post_title'],
-			'post_content'  => $data['post_content'],
-			'post_status'   => empty( $post_status ) ? 'publish' : $post_status,
-			//'post_author'  => 1,//get_current_user_id(),
-			'post_category' => ! empty( $data['categories'] ) ? $data['categories'] : []
-		);
-
-		$internal_post_id = $this->get_post_id_by_place_post_id( $data['id'] );
-
-		if ( $internal_post_id ) {
-
-			if ( 'yes' !== $this->isubmission_options->getOption( 'isubmission_is_posts_editable' ) ) {
-
-				wp_send_json( array(
-					'status'  => false,
-					'message' => __( 'Posts are not editable.', ISUBMISSION_ID_LANGUAGES )
-				) );
-
-				return;
-			}
-
-			$post_data['ID'] = $internal_post_id;
-
-			$post_id = wp_update_post( $post_data, true );
 		} else {
 
-			$post_id = wp_insert_post( $post_data, true );
-		}
-
-		if ( empty( $post_id ) || is_wp_error( $post_id ) ) {
-
-			wp_send_json( array(
-				'status'  => false,
-				'message' => $post_id->get_error_message()
-			) );
-
-			return;
-		}
-
-		$import_external_images = new Isubmission_Import_External_Images();
-		$import_result          = $import_external_images->import_content_images( $post_id );
-
-		if ( is_string( $import_result ) ) {
-
-			wp_send_json( array(
-				'status'  => false,
-				'message' => $import_result
-			) );
-
-			return;
-		}
-
-		if ( ! empty( $data['front_image'] ) ) {
-
-			$featured_image_result = $import_external_images->sideload( $post_id, $data['front_image'] );
-
-			if ( is_string( $featured_image_result ) ) {
+			if ( empty( $data['id'] ) ) {
 
 				wp_send_json( array(
 					'status'  => false,
-					'message' => $featured_image_result
+					'message' => __( 'Post id can\'t be empty.', ISUBMISSION_ID_LANGUAGES )
 				) );
 
 				return;
 			}
 
-			set_post_thumbnail( $post_id, $featured_image_result );
-		}
+			if ( empty( $data['post_title'] ) || empty( $data['post_content'] ) ) {
 
-		$is_yoast_active = self::is_yoast_active();
+				wp_send_json( array(
+					'status'  => false,
+					'message' => __( 'Post title and content can\'t be empty.', ISUBMISSION_ID_LANGUAGES )
+				) );
 
-		if ( ! empty( $data['meta_title'] ) ) {
-
-			add_post_meta( $post_id, '_isubmission_meta_title', $data['meta_title'] );
-
-			if ( $is_yoast_active ) {
-
-				update_post_meta( $post_id, '_yoast_wpseo_title', $data['meta_title'] );
+				return;
 			}
-		}
 
-		if ( ! empty( $data['meta_description'] ) ) {
+			$post_status = $this->isubmission_options->getOption( 'isubmission_post_status' );
 
-			add_post_meta( $post_id, '_isubmission_meta_description', $data['meta_description'] );
+			$post_data = array(
+				'post_title'    => $data['post_title'],
+				'post_content'  => $data['post_content'],
+				'post_status'   => empty( $post_status ) ? 'publish' : $post_status,
+				//'post_author'  => 1,//get_current_user_id(),
+				'post_category' => ! empty( $data['categories'] ) ? $data['categories'] : []
+			);
 
-			if ( $is_yoast_active ) {
+			$internal_post_id = $this->get_post_id_by_place_post_id( $data['id'] );
 
-				update_post_meta( $post_id, '_yoast_wpseo_metadesc', $data['meta_description'] );
+			if ( $internal_post_id ) {
+
+				if ( 'yes' !== $this->isubmission_options->getOption( 'isubmission_is_posts_editable' ) ) {
+
+					wp_send_json( array(
+						'status'  => false,
+						'message' => __( 'Posts are not editable.', ISUBMISSION_ID_LANGUAGES )
+					) );
+
+					return;
+				}
+
+				$post_data['ID'] = $internal_post_id;
+
+				$post_id = wp_update_post( $post_data, true );
+			} else {
+
+				$post_id = wp_insert_post( $post_data, true );
 			}
+
+			if ( empty( $post_id ) || is_wp_error( $post_id ) ) {
+
+				wp_send_json( array(
+					'status'  => false,
+					'message' => $post_id->get_error_message()
+				) );
+
+				return;
+			}
+
+			$import_external_images = new Isubmission_Import_External_Images();
+			$import_result          = $import_external_images->import_content_images( $post_id );
+
+			if ( is_string( $import_result ) ) {
+
+				wp_send_json( array(
+					'status'  => false,
+					'message' => $import_result
+				) );
+
+				return;
+			}
+
+			if ( ! empty( $data['front_image'] ) ) {
+
+				$featured_image_result = $import_external_images->sideload( $post_id, $data['front_image'] );
+
+				if ( is_string( $featured_image_result ) ) {
+
+					wp_send_json( array(
+						'status'  => false,
+						'message' => $featured_image_result
+					) );
+
+					return;
+				}
+
+				set_post_thumbnail( $post_id, $featured_image_result );
+			}
+
+			$is_yoast_active = self::is_yoast_active();
+
+			if ( ! empty( $data['meta_title'] ) ) {
+
+				add_post_meta( $post_id, '_isubmission_meta_title', $data['meta_title'] );
+
+				if ( $is_yoast_active ) {
+
+					update_post_meta( $post_id, '_yoast_wpseo_title', $data['meta_title'] );
+				}
+			}
+
+			if ( ! empty( $data['meta_description'] ) ) {
+
+				add_post_meta( $post_id, '_isubmission_meta_description', $data['meta_description'] );
+
+				if ( $is_yoast_active ) {
+
+					update_post_meta( $post_id, '_yoast_wpseo_metadesc', $data['meta_description'] );
+				}
+			}
+
+			if ( ! empty( $data['custom_field'] ) ) {
+				add_post_meta( $post_id, 'isubmission_image_source', $data['custom_field'] );
+			}
+
+			$this->insert_row( $post_id, $data['id'] );
+
+			wp_send_json( array(
+				'status'      => true,
+				'message'     => __( 'Success', ISUBMISSION_ID_LANGUAGES ),
+				'article_url' => get_permalink( $post_id )
+			) );
 		}
-
-		if ( ! empty( $data['custom_field'] ) ) {
-			add_post_meta( $post_id, 'isubmission_image_source', $data['custom_field'] );
-		}
-
-		$this->insert_row( $post_id, $data['id'] );
-
-		wp_send_json( array(
-			'status'      => true,
-			'message'     => __( 'Success', ISUBMISSION_ID_LANGUAGES ),
-			'article_url' => get_permalink( $post_id )
-		) );
 	}
 
 	public function is_yoast_active() {
