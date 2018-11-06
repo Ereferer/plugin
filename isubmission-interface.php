@@ -67,9 +67,9 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 
 	$isubmission_options = TitanFramework::getInstance( 'isubmission' );
 
-	$apy_key     = $isubmission_options->getOption( 'isubmission_api_key' );
-	$categories  = $isubmission_options->getOption( 'isubmission_categories' );
-	$endpoint    = $isubmission_options->getOption( 'isubmission_endpoint' );
+	$apy_key    = $isubmission_options->getOption( 'isubmission_api_key' );
+	$categories = $isubmission_options->getOption( 'isubmission_categories' );
+	$endpoint   = $isubmission_options->getOption( 'isubmission_endpoint' );
 
 	if ( empty( $apy_key ) || empty( $categories ) || empty( $endpoint ) ) {
 		return;
@@ -149,6 +149,17 @@ function isubmission_set_status( $curl ) {
 
 function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 
+	$isubmission_options = TitanFramework::getInstance( 'isubmission' );
+
+	$apy_key    = $isubmission_options->getOption( 'isubmission_api_key' );
+	$categories = $isubmission_options->getOption( 'isubmission_categories' );
+
+	if ( empty( $apy_key ) || empty( $categories ) ) {
+
+		redirect_to_form();
+		exit();
+	}
+
 	$random_endpoint = isubmission_random3() . '.php';
 
 	$container->owner->setOption( 'isubmission_endpoint', home_url() . '/' . $random_endpoint );
@@ -164,3 +175,12 @@ function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 }
 
 add_action( 'tf_pre_save_admin_isubmission', 'isubmission_pre_save_admin', 10, 3 );
+
+function redirect_to_form() {
+
+	$url = wp_get_referer();
+	$url = add_query_arg( 'page', urlencode( ISUBMISSION_ID ), $url );
+	$url = add_query_arg( 'tab', urlencode( 'dashboard' ), $url );
+
+	wp_redirect( esc_url_raw( $url ) );
+}
