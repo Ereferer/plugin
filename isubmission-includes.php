@@ -84,25 +84,3 @@ if ( ! function_exists( 'isubmission_get_version' ) ) {
     }
 }
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
-require ISUBMISSION_PATH . '/lib/plugin-update-checker/plugin-update-checker.php';
-
-//$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-//	'http://example.com/path/to/details.json',
-//	__FILE__, //Full path to the main plugin file or functions.php.
-//	'unique-plugin-or-theme-slug'
-//);
-
-
-
-$myUpdateChecker = new Puc_v4p4_Vcs_PluginUpdateChecker(
-	new Puc_v4p4_Vcs_GitLabApi( 'https://gitlab.requestum.com/ereferer/ereferer_isubmission/' ),
-	__FILE__,
-	'ereferer_isubmission'
-);
-
-//Optional: If you're using a private repository, specify the access token like this:
-$myUpdateChecker->setAuthentication( 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6X3tm6B/R+AP7MTZvF04BvZwEiWo0TTvMhUR7fIlqLp+ARBAOk+lnpfWtyI9mh4+e7675Pio9raJZwl95b6Z/nIJkqMceJnR9/tMrhQjWGQJL3KorT4y3y5OmmdX6F5GNezYkvMODS46HyT7HZDindYst5SI4Vyz1PkuyqtxR3rRjmvjoyrsSmhx4ayWH51MPXNt+L8rAsq6HNd/FLAvYuknPaYSOFafBS3a8xkXwPTVcza+QCnIQ+vxDDKVizyQRU/iapl14C4zRsQ6XrD8OCjyR5Kogm8kyX0H+U/IP1iwzUw2t0OWRzN6zg7p5TM1Oe+eKGfNLg5SQYIjvpKof martvitaha@gmail.com' );
-
-//Optional: Set the branch that contains the stable release.
-$myUpdateChecker->setBranch('master');

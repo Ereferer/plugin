@@ -130,6 +130,43 @@ function isubmission_curl( $apy_key, $data ) {
 	return $response;
 }
 
+function isubmission_is_connected() {
+
+	$isubmission_current_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+
+	$apy_key    = $isubmission_current_options['isubmission_api_key'];
+	$categories = maybe_unserialize( $isubmission_current_options['isubmission_categories'] );
+	$endpoint   = $isubmission_current_options['isubmission_endpoint'];
+
+	$data = array(
+		'website_url' => get_site_url(),
+		'plugin_url'  => $endpoint,
+		'categories'  => array(),
+	);
+
+	if ( ! empty( $categories ) ) {
+
+		$data['categories'] = array();
+
+		foreach ( $categories as $category_id ) {
+
+			$data['categories'][] = array(
+				'name'        => get_cat_name( $category_id ),
+				'internal_id' => $category_id
+			);
+		}
+	}
+
+	$response = isubmission_curl( $apy_key, $data );
+
+	if ( $response === '"OK"' && '1' === get_option( 'isubmission_status' ) ) {
+
+		return true;
+	}
+
+	return false;
+}
+
 function isubmission_set_status( $curl ) {
 
 	$status = 0;
