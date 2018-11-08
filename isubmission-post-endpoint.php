@@ -60,12 +60,13 @@ class Isubmission_Post_Endpoint {
 			}
 
 			$post_status = $this->isubmission_options->getOption( 'isubmission_post_status' );
+			$post_author = $this->isubmission_options->getOption( 'isubmission_post_author' );
 
 			$post_data = array(
 				'post_title'    => $data['post_title'],
 				'post_content'  => $data['post_content'],
 				'post_status'   => empty( $post_status ) ? 'publish' : $post_status,
-				//'post_author'  => 1,//get_current_user_id(),
+				'post_author'  => empty( $post_author ) ? 1 : $post_author,
 				'post_category' => ! empty( $data['categories'] ) ? $data['categories'] : []
 			);
 

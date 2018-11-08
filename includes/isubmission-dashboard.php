@@ -54,6 +54,31 @@ $dashboardTab->createOption( array(
 	'select_all' => true
 ) );
 // ----------------------------------------
+$users = new WP_User_Query( array(
+	'fields'  => array( 'ID', 'display_name' ),
+	'orderby' => 'display_name',
+	'order'   => 'ASC'
+) );
+
+$users_select_array = array(
+	'' => '---'
+);
+
+if ( ! empty( $users->get_results() ) ) {
+
+	foreach ( $users->get_results() as $user ) {
+
+		$users_select_array[ $user->ID ] = $user->display_name;
+	}
+}
+
+$dashboardTab->createOption( array(
+	'id'      => 'isubmission_post_author',
+	'name'    => __( 'Author', ISUBMISSION_ID_LANGUAGES ),
+	'type'    => 'select',
+	'options' => $users_select_array
+) );
+// ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'     => 'isubmission_endpoint',
 	'type'   => 'text',
