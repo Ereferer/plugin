@@ -5,7 +5,7 @@
  * @license     GPL-3.0+
  * Plugin Name: Article submit
  * Description: Vente et échange d'articles
- * Version:     1.1
+ * Version:     1.0.1
  * Text Domain: isubmission
  * License:     GPL-3.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -25,3 +25,10 @@ require_once(ISUBMISSION_PATH . ISUBMISSION_ID . '-includes.php');
 register_activation_hook( __FILE__, 'isubmission_install' );
 register_deactivation_hook( __FILE__, 'isubmission_uninstall');
 
+require ISUBMISSION_PATH . '/lib/plugin-update-checker/plugin-update-checker.php';
+
+$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+	'https://github.com/epinephrin/ereferer_isubmission/',
+	__FILE__,
+	'isubmission'
+);
