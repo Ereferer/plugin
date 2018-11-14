@@ -28,7 +28,7 @@ register_deactivation_hook( __FILE__, 'isubmission_uninstall');
 require ISUBMISSION_PATH . '/lib/plugin-update-checker/plugin-update-checker.php';
 
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-	'https://github.com/epinephrin/ereferer_isubmission/',
+	'https://github.com/Ereferer/plugin',
 	__FILE__,
 	'isubmission'
 );
