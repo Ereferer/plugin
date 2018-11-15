@@ -5,12 +5,12 @@
  * @license     GPL-3.0+
  * Plugin Name: Article submit
  * Description: Vente et échange d'articles
- * Version:     1.0.1
+ * Version:     1.0.2
  * Text Domain: isubmission
  * License:     GPL-3.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  */
-defined('ABSPATH') or die('Are you crazy!');
+defined('ABSPATH') or die('Are you crazyy!');
 // -----------------------------------------
 defined('ISUBMISSION_PATH') or define('ISUBMISSION_PATH', plugin_dir_path(__FILE__));
 defined('ISUBMISSION_URL') or define('ISUBMISSION_URL', plugin_dir_url(__FILE__));
