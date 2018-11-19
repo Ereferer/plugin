@@ -123,7 +123,7 @@ function isubmission_curl( $apy_key, $data ) {
 
 	$response = curl_exec( $curl );
 
-	isubmission_set_status( $curl );
+	//isubmission_set_status( $curl );
 
 	curl_close( $curl );
 
@@ -139,9 +139,10 @@ function isubmission_is_connected() {
 	$endpoint   = $isubmission_current_options['isubmission_endpoint'];
 
 	$data = array(
-		'website_url' => get_site_url(),
-		'plugin_url'  => $endpoint,
-		'categories'  => array(),
+		'website_url'     => get_site_url(),
+		'plugin_url'      => $endpoint,
+		'categories'      => array(),
+		'test_connection' => true
 	);
 
 	if ( ! empty( $categories ) ) {
@@ -159,7 +160,7 @@ function isubmission_is_connected() {
 
 	$response = isubmission_curl( $apy_key, $data );
 
-	if ( $response === '"OK"' && '1' === get_option( 'isubmission_status' ) ) {
+	if ( $response === '"OK"' /*&& '1' === get_option( 'isubmission_status' )*/ ) {
 
 		return true;
 	}
@@ -167,7 +168,7 @@ function isubmission_is_connected() {
 	return false;
 }
 
-function isubmission_set_status( $curl ) {
+/*function isubmission_set_status( $curl ) {
 
 	$status = 0;
 
@@ -182,7 +183,7 @@ function isubmission_set_status( $curl ) {
 	}
 
 	update_option( 'isubmission_status', $status, false );
-}
+}*/
 
 function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 
