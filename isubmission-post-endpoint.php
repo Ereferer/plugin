@@ -74,7 +74,7 @@ class Isubmission_Post_Endpoint {
 
 			if ( $internal_post_id ) {
 
-				if ( 'yes' !== $this->isubmission_options->getOption( 'isubmission_is_posts_editable' ) ) {
+				if ( 'yes' !== $this->isubmission_options->getOption( 'isubmission_is_posts_editable' ) && empty( $data['force'] ) ) {
 
 					wp_send_json( array(
 						'status'  => false,
