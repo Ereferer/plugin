@@ -35,6 +35,7 @@ class Isubmission_Post_Endpoint {
 
 			wp_send_json( array(
 				'status'      => true,
+				'plugin_url'  => $this->isubmission_options->getOption( 'isubmission_endpoint' ),
 				'message'     => __( 'Success connection', ISUBMISSION_ID_LANGUAGES ),
 			) );
 		} else {
