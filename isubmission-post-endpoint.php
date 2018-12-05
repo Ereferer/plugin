@@ -168,6 +168,7 @@ class Isubmission_Post_Endpoint {
 			wp_send_json( array(
 				'status'      => true,
 				'message'     => __( 'Success', ISUBMISSION_ID_LANGUAGES ),
+				'publish_status' => $post_data['post_status'],
 				'article_url' => get_permalink( $post_id )
 			) );
 		}
