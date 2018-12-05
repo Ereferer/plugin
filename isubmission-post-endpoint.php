@@ -87,6 +87,10 @@ class Isubmission_Post_Endpoint {
 
 				$post_data['ID'] = $internal_post_id;
 
+                if ( ! empty( $data['force'] ) ) {
+                    $post_data['post_status'] = 'publish';
+                }
+
 				$post_id = wp_update_post( $post_data, true );
 			} else {
 
