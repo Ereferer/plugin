@@ -7,16 +7,16 @@ defined('ABSPATH') or die('Are you crazy!');
 
 add_action( 'tf_create_options', 'isubmission_create_options' );
 function isubmission_create_options() {
-	
+
 	remove_filter( 'admin_footer_text', 'addTitanCreditText' );
 
-    /***************************************************************
-     * Launch options framework instance
-     ***************************************************************/
-    $isubmission_options = TitanFramework::getInstance( 'isubmission' );
-    /***************************************************************
-     * Create option menu item
-     ***************************************************************/
+	/***************************************************************
+	 * Launch options framework instance
+	 ***************************************************************/
+	$isubmission_options = TitanFramework::getInstance( 'isubmission' );
+	/***************************************************************
+	 * Create option menu item
+	 ***************************************************************/
 	$menu_name = ISUBMISSION_NAME;
 	$isubmission_current_options = maybe_unserialize( get_option( 'isubmission_options' ) );
 
@@ -32,15 +32,15 @@ function isubmission_create_options() {
 		'capability' => 'manage_options',
 		'desc'       => '',
 	) );
-	
-    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    // Create option panel tabs              -=
-    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    $dashboardTab = $isubmission_panel->createTab( array(
-        'name' => __( 'Options', ISUBMISSION_ID_LANGUAGES ),
-        'id'   => 'dashboard',
-    ) );
-			
+
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	// Create option panel tabs              -=
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	$dashboardTab = $isubmission_panel->createTab( array(
+		'name' => __( 'Options', ISUBMISSION_ID_LANGUAGES ),
+		'id'   => 'dashboard',
+	) );
+
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	// Create tab's plugin                   -=
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -51,15 +51,15 @@ function isubmission_create_options() {
 			require_once($isubmissionOptionFile);
 	}
 
-    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	// Launch options framework instance     -=
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    $dashboardTab->createOption( array(
-        'type'      => 'save',
-        'save'      => __( 'Sauvegardez les changements', ISUBMISSION_ID_LANGUAGES ),
+	$dashboardTab->createOption( array(
+		'type'      => 'save',
+		'save'      => __( 'Sauvegardez les changements', ISUBMISSION_ID_LANGUAGES ),
 		'use_reset' => false,
-    ) );
-	
+	) );
+
 } // END isubmission_create_options
 
 
@@ -202,17 +202,34 @@ function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 
 	$container->owner->setOption( 'isubmission_endpoint', home_url() . '/' . $random_endpoint );
 
-	global $wp_rewrite;
-
-	$api_url = plugins_url( 'isubmission-post-endpoint.php', __FILE__ );
-	$api_url = substr( $api_url, strlen( home_url() ) + 1 );
-
-	$wp_rewrite->add_external_rule( $random_endpoint . '$', $api_url );
+	isubmission_set_external_rule();
 
 	flush_rewrite_rules();
 }
 
 add_action( 'tf_pre_save_admin_isubmission', 'isubmission_pre_save_admin', 10, 3 );
+
+function isubmission_set_external_rule() {
+
+	global $wp_rewrite;
+
+	$api_url = plugins_url( 'isubmission-post-endpoint.php', __FILE__ );
+	$api_url = substr( $api_url, strlen( home_url() ) + 1 );
+
+	$isubmission_options = TitanFramework::getInstance( 'isubmission' );
+	$endpoint = $isubmission_options->getOption( 'isubmission_endpoint' );
+
+	if ( empty( $endpoint ) ) {
+
+		return;
+	}
+
+	$endpoint = substr( $endpoint, strlen( home_url() ) + 1 );
+
+	$wp_rewrite->add_external_rule( $endpoint . '$', $api_url );
+}
+
+add_action( 'init', 'isubmission_set_external_rule' );
 
 function redirect_to_form() {
 
