@@ -87,9 +87,9 @@ class Isubmission_Post_Endpoint {
 
 				$post_data['ID'] = $internal_post_id;
 
-                if ( ! empty( $data['force'] ) ) {
-                    $post_data['post_status'] = 'publish';
-                }
+				if ( ! empty( $data['force'] ) ) {
+					$post_data['post_status'] = 'publish';
+				}
 
 				$post_id = wp_update_post( $post_data, true );
 			} else {
@@ -122,7 +122,7 @@ class Isubmission_Post_Endpoint {
 
 			if ( ! empty( $data['front_image'] ) ) {
 
-				$featured_image_result = $import_external_images->sideload( $post_id, $data['front_image'] );
+				$featured_image_result = $import_external_images->sideload( $post_id, array( 'src' => $data['front_image'] ) );
 
 				if ( is_string( $featured_image_result ) ) {
 

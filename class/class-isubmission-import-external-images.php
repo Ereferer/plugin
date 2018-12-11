@@ -16,17 +16,19 @@ class Isubmission_Import_External_Images {
 
 		$post = get_post( $post_id );
 
-		$images_urls = $this->get_images_urls( $post->post_content );
+		$post_images = $this->get_post_images( $post->post_content );
 
-		if ( ! $images_urls ) {
+		if ( ! $post_images ) {
+
 			return;
 		}
 
-		foreach ( $images_urls as $img_url ) {
+		foreach ( $post_images as $post_image ) {
 
-			$new_img_id = $this->sideload( $post_id, $img_url );
+			$new_img_id = $this->sideload( $post_id, $post_image );
 
 			if ( is_string( $new_img_id ) ) {
+
 				continue;
 				//return $new_img_id;
 			}
@@ -35,7 +37,7 @@ class Isubmission_Import_External_Images {
 
 			if ( ! empty( $new_img_url ) ) {
 
-				$post->post_content = str_replace( $img_url, $new_img_url, $post->post_content );
+				$post->post_content = str_replace( $post_image['src'], $new_img_url, $post->post_content );
 			}
 		}
 
@@ -47,65 +49,129 @@ class Isubmission_Import_External_Images {
 		return true;
 	}
 
-	private function get_images_urls( $content ) {
+	private function get_post_images( $content ) {
 
-		$home_url = home_url();
+		$post_images = array();
 
-		$images_urls = array();
+		$doc = new DOMDocument();
+		@$doc->loadHTML( $content );
 
-		preg_match_all( '/<img[^>]* src=[\'"]?([^>\'" ]+)/', $content, $matches );
-		preg_match_all( '/<a[^>]* href=[\'"]?([^>\'" ]+)/', $content, $matches2 );
+		$img_tags = $doc->getElementsByTagName( 'img' );
+		$a_tags   = $doc->getElementsByTagName( 'a' );
 
-		$urls = array_merge( $matches[1], $matches2[1] );
+		foreach ( $img_tags as $img_tag ) {
 
-		foreach ( $urls as $url ) {
-
-			if ( $home_url === substr( $url, 0, strlen( $home_url ) ) ) {
-				continue;
-			}
-
-			$images_urls[] = $url;
+			$post_images[] = array(
+				'src'    => $img_tag->getAttribute( 'src' ),
+				'width'  => $img_tag->getAttribute( 'width' ),
+				'height' => $img_tag->getAttribute( 'height' )
+			);
 		}
 
-		$images_urls = array_unique( $images_urls );
+		foreach ( $a_tags as $a_tag ) {
 
-		return $images_urls;
+			$post_images[] = array(
+				'src'    => $a_tag->getAttribute( 'src' ),
+				'width'  => null,
+				'height' => null
+			);
+		}
+
+		$post_images = array_unique( $post_images, SORT_REGULAR );
+
+		return $post_images;
 	}
 
-	public function sideload( $post_id, $img_url ) {
+	public function sideload( $post_id, $post_image ) {
 
-		preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $img_url, $matches );
+		preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $post_image['src'], $matches );
 
 		if ( empty( $matches[0] ) ) {
 
 			return __( 'Pas d\'image', ISUBMISSION_ID_LANGUAGES );
 		}
 
-		$download_url = download_url( $img_url );
+		$temp_file = download_url( $post_image['src'] );
 
-		if ( is_wp_error( $download_url ) ) {
+		if ( is_wp_error( $temp_file ) ) {
 
-			return $download_url->get_error_messages();
+			return $temp_file->get_error_messages();
 		}
+
+		$mime_type = mime_content_type( $temp_file );
 
 		$file_array = array(
 			'name'     => basename( $matches[0] ),
-			'tmp_name' => $download_url
+			'type'     => $mime_type,
+			'tmp_name' => $temp_file
 		);
 
-		$id = media_handle_sideload( $file_array, $post_id );
+		$overrides = array(
+			'test_form' => false
+		);
 
-		// errors
-		if ( is_wp_error( $id ) ) {
-
-			@unlink( $file_array['tmp_name'] );
-
-			return $id->get_error_messages();
-		}
+		$file = wp_handle_sideload( $file_array, $overrides );
 
 		// remove temporary file
-		@unlink( $file_array['tmp_name'] );
+		@unlink( $temp_file );
 
-		return $id;
+		if ( isset( $file['error'] ) ) {
+
+			return new WP_Error( 'upload_error', $file['error'] );
+		}
+
+		if ( ! empty( $post_image['width'] ) || ! empty( $post_image['height'] ) ) {
+
+			$resized = $this->resize( $file['file'], $post_image['width'], $post_image['height'] );
+
+			if ( is_wp_error( $resized ) ) {
+
+				return $resized->get_error_messages();
+			}
+		}
+
+		$attachment_id = $this->insert_attachment( $post_id, $file['file'], $mime_type );
+
+		if ( is_wp_error( $attachment_id ) ) {
+
+			return $attachment_id->get_error_messages();
+		}
+
+		return $attachment_id;
+	}
+
+	private function insert_attachment( $post_id, $file_path, $mime_type ) {
+
+		$wp_upload_dir = wp_upload_dir();
+
+		$attachment_data = array(
+			'guid'           => $wp_upload_dir['url'] . '/' . basename( $file_path ),
+			'post_mime_type' => $mime_type,
+			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file_path ) ),
+			'post_content'   => '',
+			'post_status'    => 'inherit',
+		);
+
+		return wp_insert_attachment( $attachment_data, $file_path, $post_id );
+	}
+
+	private function resize( $file_path, $width, $height ) {
+
+		$image = wp_get_image_editor( $file_path );
+
+		if ( ! is_wp_error( $image ) ) {
+
+			$image->resize( $width, $height, true );
+
+			$resized = $image->save( $file_path );
+
+			if ( is_wp_error( $resized ) ) {
+
+				return new WP_Error( 'image_resize_error', $resized );
+			}
+		} else {
+
+			return new WP_Error( 'image_editor_load_error', $image );
+		}
 	}
 }
