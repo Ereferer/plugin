@@ -1,6 +1,8 @@
 <?php
 
-ini_set( 'max_execution_time', 300 );
+if ( ini_get( 'max_execution_time' ) < 300 ) {
+	ini_set( 'max_execution_time', 300 );
+}
 
 require_once '../../../wp-load.php';
 require_once 'lib/titan-framework/titan-framework-embedder.php';
