@@ -110,7 +110,17 @@ class Isubmission_Import_External_Images {
 			'test_form' => false
 		);
 
-		$file = wp_handle_sideload( $file_array, $overrides );
+		$time = current_time( 'mysql' );
+
+		if ( $post = get_post( $post_id ) ) {
+
+			if ( substr( $post->post_date, 0, 4 ) > 0 ) {
+
+				$time = $post->post_date;
+			}
+		}
+
+		$file = wp_handle_sideload( $file_array, $overrides, $time );
 
 		// remove temporary file
 		@unlink( $temp_file );
@@ -130,29 +140,48 @@ class Isubmission_Import_External_Images {
 			}
 		}
 
-		$attachment_id = $this->insert_attachment( $post_id, $file['file'], $mime_type );
+		$url     = $file['url'];
+		$type    = $file['type'];
+		$file    = $file['file'];
+		$title   = preg_replace( '/\.[^.]+$/', '', basename( $file ) );
+		$content = '';
+
+		// Use image exif/iptc data for title and caption defaults if possible.
+		if ( $image_meta = wp_read_image_metadata( $file ) ) {
+			if ( trim( $image_meta['title'] ) && ! is_numeric( sanitize_title( $image_meta['title'] ) ) ) {
+				$title = $image_meta['title'];
+			}
+			if ( trim( $image_meta['caption'] ) ) {
+				$content = $image_meta['caption'];
+			}
+		}
+
+		if ( isset( $desc ) ) {
+			$title = $desc;
+		}
+
+		// Construct the attachment array.
+		$attachment = array(
+			'post_mime_type' => $type,
+			'guid'           => $url,
+			'post_parent'    => $post_id,
+			'post_title'     => $title,
+			'post_content'   => $content,
+		);
+
+		// This should never be set as it would then overwrite an existing attachment.
+		unset( $attachment['ID'] );
+
+		$attachment_id = wp_insert_attachment( $attachment, $file, $post_id );
 
 		if ( is_wp_error( $attachment_id ) ) {
 
 			return $attachment_id->get_error_messages();
 		}
 
+		wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $file ) );
+
 		return $attachment_id;
-	}
-
-	private function insert_attachment( $post_id, $file_path, $mime_type ) {
-
-		$wp_upload_dir = wp_upload_dir();
-
-		$attachment_data = array(
-			'guid'           => $wp_upload_dir['url'] . '/' . basename( $file_path ),
-			'post_mime_type' => $mime_type,
-			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file_path ) ),
-			'post_content'   => '',
-			'post_status'    => 'inherit',
-		);
-
-		return wp_insert_attachment( $attachment_data, $file_path, $post_id );
 	}
 
 	private function resize( $file_path, $width, $height ) {
