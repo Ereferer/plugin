@@ -95,12 +95,6 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 	}
 
 	$response = isubmission_curl( $apy_key, $data );
-
-//	echo '<pre>';
-//	print_r( $response );
-//	echo '</pre>';
-//
-//	exit;
 }
 
 add_action( 'tf_save_admin_isubmission', 'isubmission_save_options', 10, 3 );
@@ -109,10 +103,7 @@ function isubmission_curl( $apy_key, $data ) {
 
 	$data_json = json_encode( $data );
 
-
 	$curl = curl_init( 'http://ereferer.com/bo/exchange-site/update-partner' );
-//	$curl = curl_init( 'http://prod.ereferer.fr/partners.html' );
-//	$curl = curl_init( 'http://ereferer.loc/partners.html' );
 	curl_setopt( $curl, CURLOPT_HTTPHEADER, array(
 		'Content-Type: application/json',
 		'Authorization: Bearer ' . $apy_key
@@ -122,8 +113,6 @@ function isubmission_curl( $apy_key, $data ) {
 	curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
 
 	$response = curl_exec( $curl );
-
-	//isubmission_set_status( $curl );
 
 	curl_close( $curl );
 
@@ -160,30 +149,13 @@ function isubmission_is_connected() {
 
 	$response = isubmission_curl( $apy_key, $data );
 
-	if ( $response === '"OK"' /*&& '1' === get_option( 'isubmission_status' )*/ ) {
+	if ( $response === '"OK"' ) {
 
 		return true;
 	}
 
 	return false;
 }
-
-/*function isubmission_set_status( $curl ) {
-
-	$status = 0;
-
-	if ( ! curl_errno( $curl ) ) {
-
-		$info = curl_getinfo( $curl );
-
-		if ( ! empty( $info['http_code'] ) && 200 == $info['http_code'] ) {
-
-			$status = 1;
-		}
-	}
-
-	update_option( 'isubmission_status', $status, false );
-}*/
 
 function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 
@@ -194,44 +166,34 @@ function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 
 	if ( empty( $apy_key ) || empty( $categories ) ) {
 
-		redirect_to_form();
+		isubmission_redirect_to_form();
 		exit();
 	}
 
-	$random_endpoint = isubmission_random3() . '.php';
+	$random_file        = isubmission_random3() . '.php';
+	$plugin_path        = plugin_dir_path( __FILE__ );
+	$file_endpoint_path = $plugin_path . '../../../';
+	$file_endpoint      = $file_endpoint_path . $random_file;
 
-	$container->owner->setOption( 'isubmission_endpoint', home_url() . '/' . $random_endpoint );
+	$previous_endpoint      = $isubmission_options->getOption( 'isubmission_endpoint' );
+	$previous_file_endpoint = $file_endpoint_path . substr( $previous_endpoint, strlen( home_url() ) + 1 );
 
-	isubmission_set_external_rule();
+	$container->owner->setOption( 'isubmission_endpoint', home_url() . '/' . $random_file );
 
-	flush_rewrite_rules();
+	if ( file_exists( $previous_file_endpoint ) ) {
+
+		rename( $previous_file_endpoint, $file_endpoint );
+	} else {
+
+		$content = "<?php require_once '" . $plugin_path . "isubmission-post-endpoint.php';";
+
+		file_put_contents( $file_endpoint, $content );
+	}
 }
 
 add_action( 'tf_pre_save_admin_isubmission', 'isubmission_pre_save_admin', 10, 3 );
 
-function isubmission_set_external_rule() {
-
-	global $wp_rewrite;
-
-	$api_url = plugins_url( 'isubmission-post-endpoint.php', __FILE__ );
-	$api_url = substr( $api_url, strlen( home_url() ) + 1 );
-
-	$isubmission_options = TitanFramework::getInstance( 'isubmission' );
-	$endpoint = $isubmission_options->getOption( 'isubmission_endpoint' );
-
-	if ( empty( $endpoint ) ) {
-
-		return;
-	}
-
-	$endpoint = substr( $endpoint, strlen( home_url() ) + 1 );
-
-	$wp_rewrite->add_external_rule( $endpoint . '$', $api_url );
-}
-
-add_action( 'init', 'isubmission_set_external_rule' );
-
-function redirect_to_form() {
+function isubmission_redirect_to_form() {
 
 	$url = wp_get_referer();
 	$url = add_query_arg( 'page', urlencode( ISUBMISSION_ID ), $url );

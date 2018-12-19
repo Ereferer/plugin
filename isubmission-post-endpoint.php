@@ -4,9 +4,9 @@ if ( ini_get( 'max_execution_time' ) < 300 ) {
 	ini_set( 'max_execution_time', 300 );
 }
 
-require_once '../../../wp-load.php';
-require_once 'lib/titan-framework/titan-framework-embedder.php';
-require_once 'class/class-isubmission-import-external-images.php';
+require_once dirname( __FILE__ ) . '/../../../wp-load.php';
+require_once dirname( __FILE__ ) . '/lib/titan-framework/titan-framework-embedder.php';
+require_once dirname( __FILE__ ) . '/class/class-isubmission-import-external-images.php';
 
 class Isubmission_Post_Endpoint {
 
