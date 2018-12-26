@@ -39,7 +39,7 @@ class Isubmission_Post_Endpoint {
 
 			wp_send_json( array(
 				'status'      => true,
-				'plugin_url'  => $this->isubmission_options->getOption( 'isubmission_endpoint' ),
+				'plugin_url'  => plugin_dir_url( __FILE__ ) . $this->isubmission_options->getOption( 'isubmission_file_endpoint' ),
 				'message'     => __( 'Success connection', ISUBMISSION_ID_LANGUAGES ),
 			) );
 		} else {
