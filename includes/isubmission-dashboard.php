@@ -80,7 +80,7 @@ $dashboardTab->createOption( array(
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(
-	'id'     => 'isubmission_endpoint',
+	'id'     => 'isubmission_file_endpoint',
 	'type'   => 'text',
 	'hidden' => true
 ) );
