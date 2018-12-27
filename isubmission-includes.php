@@ -61,7 +61,6 @@ if ( ! function_exists( 'get_plugin_data' ) ) {
 }
 
 if ( ! function_exists( 'isubmission_get_version' ) ) {
-
     function isubmission_get_version( $isubmission_infos = 'Version' ) {
     
         /* *************************************************************************************
@@ -78,10 +77,9 @@ if ( ! function_exists( 'isubmission_get_version' ) ) {
          * 'Network' - Boolean. Whether the plugin can only be activated network wide.
          *
          * ********************************************************************************** */
-
-        $plugin_data = get_plugin_data( ISUBMISSION_PATH . 'isubmission.php' );
+    
+        $plugin_data = get_plugin_data( __FILE__ );
         $plugin_version = $plugin_data[ "$isubmission_infos" ];
-
         return $plugin_version;
     }
 }

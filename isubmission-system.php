@@ -65,6 +65,25 @@ if ( ! function_exists( 'isubmission_uninstall' ) ) {
 	}
 }
 
+if ( ! function_exists( 'isubmission_upgrade_completed' ) ) {
+
+	function isubmission_upgrade_completed( $upgrader_object, $options ) {
+
+		// The path to our plugin's main file
+		$our_plugin = plugin_basename( __FILE__ );
+		// If an update has taken place and the updated type is plugins and the plugins element exists
+		if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+			// Iterate through the plugins being updated and check if ours is there
+			foreach ( $options['plugins'] as $plugin ) {
+				if ( $plugin == $our_plugin ) {
+					// Set a transient to record that our plugin has just been updated
+					set_transient( 'wp_upe_updated', 1 );
+				}
+			}
+		}
+	}
+}
+
 /**
  * Trick to update plugin database
  * @return DB Insert/Upgrade DB datas
@@ -91,37 +110,21 @@ if ( ! function_exists( 'isubmission_update_db_check' ) ) {
 
 function isubmission_check_file_endpoint() {
 
-	if ( isubmission_get_version() <= '1.1.2' ) {
+	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+
+	if ( empty( $isubmission_options['isubmission_endpoint'] ) ) {
 
 		return;
 	}
 
-	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+	$file_endpoint = plugin_dir_path( __FILE__ ) . '../../../' . substr( $isubmission_options['isubmission_endpoint'], strlen( home_url() ) + 1 );
 
-	if ( empty( $isubmission_options['isubmission_file_endpoint'] ) && ! empty( $isubmission_options['isubmission_endpoint'] ) ) {
+	if ( file_exists( $isubmission_options['isubmission_endpoint'] ) ) {
 
-		$random_file = basename( $isubmission_options['isubmission_endpoint'] );
-
-		$isubmission_options['isubmission_file_endpoint'] = $random_file;
-
-		update_option( 'isubmission_options', maybe_serialize( $isubmission_options ) );
-
-		$previous_file_endpoint = ABSPATH . $random_file;
-
-		if ( file_exists( $previous_file_endpoint ) ) {
-
-			unlink( $previous_file_endpoint );
-		}
-
-		$file_endpoint = ISUBMISSION_PATH . $random_file;
-
-		if ( file_exists( $file_endpoint ) ) {
-
-			return;
-		}
-
-		$content = "<?php require_once '" . ISUBMISSION_PATH . "isubmission-post-endpoint.php';";
-
-		file_put_contents( $file_endpoint, $content );
+		return;
 	}
+
+	$content = "<?php require_once '" . plugin_dir_path( __FILE__ ) . "isubmission-post-endpoint.php';";
+
+	file_put_contents( $file_endpoint, $content );
 }

@@ -69,16 +69,15 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 
 	$apy_key    = $isubmission_options->getOption( 'isubmission_api_key' );
 	$categories = $isubmission_options->getOption( 'isubmission_categories' );
-	$endpoint   = $isubmission_options->getOption( 'isubmission_file_endpoint' );
+	$endpoint   = $isubmission_options->getOption( 'isubmission_endpoint' );
 
 	if ( empty( $apy_key ) || empty( $categories ) || empty( $endpoint ) ) {
-
 		return;
 	}
 
 	$data = array(
 		'website_url' => get_site_url(),
-		'plugin_url'  => ISUBMISSION_URL . $endpoint,
+		'plugin_url'  => $endpoint,
 		'categories'  => array(),
 	);
 
@@ -122,21 +121,18 @@ function isubmission_curl( $apy_key, $data ) {
 
 function isubmission_is_connected() {
 
-	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+	$isubmission_current_options = maybe_unserialize( get_option( 'isubmission_options' ) );
 
-	if ( empty( $isubmission_options['isubmission_api_key'] ) || empty( $isubmission_options['isubmission_file_endpoint'] ) ) {
-
-		return false;
-	}
+	$apy_key    = $isubmission_current_options['isubmission_api_key'];
+	$categories = maybe_unserialize( $isubmission_current_options['isubmission_categories'] );
+	$endpoint   = $isubmission_current_options['isubmission_endpoint'];
 
 	$data = array(
 		'website_url'     => get_site_url(),
-		'plugin_url'      => ISUBMISSION_URL . $isubmission_options['isubmission_file_endpoint'],
+		'plugin_url'      => $endpoint,
 		'categories'      => array(),
 		'test_connection' => true
 	);
-
-	$categories = maybe_unserialize( $isubmission_options['isubmission_categories'] );
 
 	if ( ! empty( $categories ) ) {
 
@@ -151,7 +147,7 @@ function isubmission_is_connected() {
 		}
 	}
 
-	$response = isubmission_curl( $isubmission_options['isubmission_api_key'], $data );
+	$response = isubmission_curl( $apy_key, $data );
 
 	if ( $response === '"OK"' ) {
 
@@ -174,22 +170,24 @@ function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 		exit();
 	}
 
-	$random_file = isubmission_random3() . '.php';
+	$random_file        = isubmission_random3() . '.php';
+	$plugin_path        = plugin_dir_path( __FILE__ );
+	$file_endpoint_path = $plugin_path . '../../../';
+	$file_endpoint      = $file_endpoint_path . $random_file;
 
-	$previous_file_endpoint = ISUBMISSION_PATH . $isubmission_options->getOption( 'isubmission_file_endpoint' );
+	$previous_endpoint      = $isubmission_options->getOption( 'isubmission_endpoint' );
+	$previous_file_endpoint = $file_endpoint_path . substr( $previous_endpoint, strlen( home_url() ) + 1 );
 
-	$container->owner->setOption( 'isubmission_file_endpoint', $random_file );
-
-	$new_file_endpoint = ISUBMISSION_PATH . $random_file;
+	$container->owner->setOption( 'isubmission_endpoint', home_url() . '/' . $random_file );
 
 	if ( file_exists( $previous_file_endpoint ) ) {
 
-		rename( $previous_file_endpoint, $new_file_endpoint );
+		rename( $previous_file_endpoint, $file_endpoint );
 	} else {
 
-		$content = "<?php require_once '" . ISUBMISSION_PATH . "isubmission-post-endpoint.php';";
+		$content = "<?php require_once '" . $plugin_path . "isubmission-post-endpoint.php';";
 
-		file_put_contents( $new_file_endpoint, $content );
+		file_put_contents( $file_endpoint, $content );
 	}
 }
 
