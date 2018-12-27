@@ -65,49 +65,45 @@ function isubmission_create_options() {
 
 function isubmission_save_options( $container, $activeTab, $options ) {
 
-	$isubmission_options = TitanFramework::getInstance( 'isubmission' );
+	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
 
-	$apy_key    = $isubmission_options->getOption( 'isubmission_api_key' );
-	$categories = $isubmission_options->getOption( 'isubmission_categories' );
-	$endpoint   = $isubmission_options->getOption( 'isubmission_file_endpoint' );
-
-	if ( empty( $apy_key ) || empty( $categories ) || empty( $endpoint ) ) {
+	if ( empty( $isubmission_options['isubmission_api_key'] ) ||
+	     empty( $isubmission_options['isubmission_categories'] ) ||
+	     empty( $isubmission_options['isubmission_file_endpoint'] ) ) {
 
 		return;
 	}
 
 	$data = array(
 		'website_url' => get_site_url(),
-		'plugin_url'  => ISUBMISSION_URL . $endpoint,
+		'plugin_url'  => ISUBMISSION_URL . $isubmission_options['isubmission_file_endpoint'],
 		'categories'  => array(),
 	);
 
-	if ( ! empty( $categories ) ) {
+	$data['categories'] = array();
+	$categories = maybe_unserialize( $isubmission_options['isubmission_categories'] );
 
-		$data['categories'] = array();
+	foreach ( $categories as $category_id ) {
 
-		foreach ( $categories as $category_id ) {
-
-			$data['categories'][] = array(
-				'name'        => get_cat_name( $category_id ),
-				'internal_id' => $category_id
-			);
-		}
+		$data['categories'][] = array(
+			'name'        => get_cat_name( $category_id ),
+			'internal_id' => $category_id
+		);
 	}
 
-	$response = isubmission_curl( $apy_key, $data );
+	$response = isubmission_curl( $isubmission_options['isubmission_api_key'], $data );
 }
 
 add_action( 'tf_save_admin_isubmission', 'isubmission_save_options', 10, 3 );
 
-function isubmission_curl( $apy_key, $data ) {
+function isubmission_curl( $api_key, $data ) {
 
 	$data_json = json_encode( $data );
 
 	$curl = curl_init( 'http://ereferer.com/bo/exchange-site/update-partner' );
 	curl_setopt( $curl, CURLOPT_HTTPHEADER, array(
 		'Content-Type: application/json',
-		'Authorization: Bearer ' . $apy_key
+		'Authorization: Bearer ' . $api_key
 	) );
 	curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, 'PATCH' );
 	curl_setopt( $curl, CURLOPT_POSTFIELDS, $data_json );
@@ -165,10 +161,10 @@ function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 
 	$isubmission_options = TitanFramework::getInstance( 'isubmission' );
 
-	$apy_key    = $isubmission_options->getOption( 'isubmission_api_key' );
+	$api_key    = $isubmission_options->getOption( 'isubmission_api_key' );
 	$categories = $isubmission_options->getOption( 'isubmission_categories' );
 
-	if ( empty( $apy_key ) || empty( $categories ) ) {
+	if ( empty( $api_key ) || empty( $categories ) ) {
 
 		isubmission_redirect_to_form();
 		exit();

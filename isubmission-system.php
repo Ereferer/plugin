@@ -86,6 +86,8 @@ if ( ! function_exists( 'isubmission_update_db_check' ) ) {
 		}
 
 		isubmission_check_file_endpoint();
+
+		isubmission_save_options( null, null, null );
 	}
 }
 
