@@ -111,6 +111,11 @@ class Isubmission_Post_Endpoint {
 				return;
 			}
 
+			if ( ! $internal_post_id ) {
+
+				$this->insert_row( $post_id, $data['id'] );
+			}
+
 			$import_external_images = new Isubmission_Import_External_Images();
 			$import_result          = $import_external_images->import_content_images( $post_id );
 
@@ -166,8 +171,6 @@ class Isubmission_Post_Endpoint {
 			if ( ! empty( $data['custom_field'] ) ) {
 				add_post_meta( $post_id, 'isubmission_image_source', $data['custom_field'] );
 			}
-
-			$this->insert_row( $post_id, $data['id'] );
 
 			wp_send_json( array(
 				'status'      => true,
