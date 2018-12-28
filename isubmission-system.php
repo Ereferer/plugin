@@ -93,11 +93,6 @@ if ( ! function_exists( 'isubmission_update_db_check' ) ) {
 
 function isubmission_check_file_endpoint() {
 
-	if ( isubmission_get_version() <= '1.1.2' ) {
-
-		return;
-	}
-
 	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
 
 	if ( empty( $isubmission_options['isubmission_file_endpoint'] ) && ! empty( $isubmission_options['isubmission_endpoint'] ) ) {
@@ -114,16 +109,17 @@ function isubmission_check_file_endpoint() {
 
 			unlink( $previous_file_endpoint );
 		}
-
-		$file_endpoint = ISUBMISSION_PATH . $random_file;
-
-		if ( file_exists( $file_endpoint ) ) {
-
-			return;
-		}
-
-		$content = "<?php require_once '" . ISUBMISSION_PATH . "isubmission-post-endpoint.php';";
-
-		file_put_contents( $file_endpoint, $content );
 	}
+
+    if ( ! empty( $isubmission_options['isubmission_file_endpoint'] ) ) {
+
+	    $file_endpoint = ISUBMISSION_PATH . $isubmission_options['isubmission_file_endpoint'];
+
+	    if ( ! file_exists( $file_endpoint ) ) {
+
+            $content = "<?php require_once '" . ISUBMISSION_PATH . "isubmission-post-endpoint.php';";
+
+            file_put_contents( $file_endpoint, $content );
+        }
+    }
 }
