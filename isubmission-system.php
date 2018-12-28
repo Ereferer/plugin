@@ -103,12 +103,14 @@ function isubmission_check_file_endpoint() {
 
 		update_option( 'isubmission_options', maybe_serialize( $isubmission_options ) );
 
-		$previous_file_endpoint = ABSPATH . $random_file;
+        if ( defined( 'ABSPATH' ) ) {
+            $previous_file_endpoint = ABSPATH . $random_file;
 
-		if ( file_exists( $previous_file_endpoint ) ) {
+            if ( file_exists( $previous_file_endpoint ) ) {
 
-			unlink( $previous_file_endpoint );
-		}
+                unlink( $previous_file_endpoint );
+            }
+        }
 	}
 
     if ( ! empty( $isubmission_options['isubmission_file_endpoint'] ) ) {
