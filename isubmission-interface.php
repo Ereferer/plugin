@@ -100,7 +100,7 @@ function isubmission_curl( $api_key, $data ) {
 
 	$data_json = json_encode( $data );
 
-	$curl = curl_init( 'http://ereferer.com/bo/exchange-site/update-partner' );
+	$curl = curl_init( 'https://ereferer.com/bo/exchange-site/update-partner' );
 	curl_setopt( $curl, CURLOPT_HTTPHEADER, array(
 		'Content-Type: application/json',
 		'Authorization: Bearer ' . $api_key
