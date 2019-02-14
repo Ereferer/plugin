@@ -108,6 +108,9 @@ function isubmission_curl( $api_key, $data ) {
 	curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, 'PATCH' );
 	curl_setopt( $curl, CURLOPT_POSTFIELDS, $data_json );
 	curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
+    curl_setopt( $curl, CURLOPT_COOKIE, '_language_redirect=1;' );
 
 	$response = curl_exec( $curl );
 
