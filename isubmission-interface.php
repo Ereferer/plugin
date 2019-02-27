@@ -65,6 +65,11 @@ function isubmission_create_options() {
 
 function isubmission_save_options( $container, $activeTab, $options ) {
 
+	if ( empty( $activeTab ) ) {
+
+		return;
+	}
+
 	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
 
 	if ( empty( $isubmission_options['isubmission_api_key'] ) ||
