@@ -31,6 +31,7 @@ $options = ['isubmission_api_key'
 		   ,'isubmission_file_endpoint'
 		   ,'isubmission_db_version'
 		   ,'isubmission_status'
+		   ,'isubmission_is_connected'
 //		   ,'isubmission_options'
 ];
 // --------------

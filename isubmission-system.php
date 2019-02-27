@@ -125,3 +125,65 @@ function isubmission_check_file_endpoint() {
         }
     }
 }
+
+// cron
+function isubmission_cron_add_hook() {
+
+	if ( ! wp_next_scheduled( 'isubmission_check_connection' ) ) {
+
+		wp_schedule_event( time(), 'isubmission_cron_worker', 'isubmission_check_connection' );
+	}
+}
+
+add_action( 'init', 'isubmission_cron_add_hook' );
+
+function isubmission_add_schedule() {
+
+	$schedules['isubmission_cron_worker'] = array(
+		'interval' => HOUR_IN_SECONDS * 7,
+		'display'  => 'Every 7 hours'
+	);
+
+	return $schedules;
+}
+
+add_filter( 'cron_schedules', 'isubmission_add_schedule' );
+
+function isubmission_check_connection_func() {
+
+	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+
+	if ( empty( $isubmission_options['isubmission_api_key'] ) || empty( $isubmission_options['isubmission_file_endpoint'] ) ) {
+
+		return false;
+	}
+
+	$data = array(
+		'website_url'     => get_site_url(),
+		'plugin_url'      => ISUBMISSION_URL . $isubmission_options['isubmission_file_endpoint'],
+		'categories'      => array(),
+		'test_connection' => true
+	);
+
+	$categories = maybe_unserialize( $isubmission_options['isubmission_categories'] );
+
+	if ( ! empty( $categories ) ) {
+
+		$data['categories'] = array();
+
+		foreach ( $categories as $category_id ) {
+
+			$data['categories'][] = array(
+				'name'        => get_cat_name( $category_id ),
+				'internal_id' => $category_id
+			);
+		}
+	}
+
+	$response = isubmission_curl( $isubmission_options['isubmission_api_key'], $data );
+
+	$isubmission_options['isubmission_is_connected'] = $response === '"OK"' ? true : false;
+	update_option( 'isubmission_options', maybe_serialize( $isubmission_options ) );
+}
+
+add_action( 'isubmission_check_connection', 'isubmission_check_connection_func' );

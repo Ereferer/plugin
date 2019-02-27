@@ -92,6 +92,8 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 	}
 
 	$response = isubmission_curl( $isubmission_options['isubmission_api_key'], $data );
+
+	isubmission_check_connection_func();
 }
 
 add_action( 'tf_save_admin_isubmission', 'isubmission_save_options', 10, 3 );
@@ -121,43 +123,7 @@ function isubmission_curl( $api_key, $data ) {
 
 function isubmission_is_connected() {
 
-	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
-
-	if ( empty( $isubmission_options['isubmission_api_key'] ) || empty( $isubmission_options['isubmission_file_endpoint'] ) ) {
-
-		return false;
-	}
-
-	$data = array(
-		'website_url'     => get_site_url(),
-		'plugin_url'      => ISUBMISSION_URL . $isubmission_options['isubmission_file_endpoint'],
-		'categories'      => array(),
-		'test_connection' => true
-	);
-
-	$categories = maybe_unserialize( $isubmission_options['isubmission_categories'] );
-
-	if ( ! empty( $categories ) ) {
-
-		$data['categories'] = array();
-
-		foreach ( $categories as $category_id ) {
-
-			$data['categories'][] = array(
-				'name'        => get_cat_name( $category_id ),
-				'internal_id' => $category_id
-			);
-		}
-	}
-
-	$response = isubmission_curl( $isubmission_options['isubmission_api_key'], $data );
-
-	if ( $response === '"OK"' ) {
-
-		return true;
-	}
-
-	return false;
+	return get_option( 'isubmission_is_connected' );
 }
 
 function isubmission_pre_save_admin( $container, $activeTab, $options ) {
