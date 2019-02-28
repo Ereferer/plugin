@@ -98,12 +98,9 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 
 	$response = isubmission_curl( $isubmission_options['isubmission_api_key'], $data );
 
-    $parsedResponse = json_decode($response, true);
-    if ( $parsedResponse['status'] !== "ok" ) {
-        update_option( 'isubmission_is_connected', false);
-    }else{
-        update_option( 'isubmission_is_connected', true);
-    }
+	$parsed_response = json_decode($response, true);
+
+	isubmission_set_connection_status( $parsed_response );
 }
 
 add_action( 'tf_save_admin_isubmission', 'isubmission_save_options', 10, 3 );
@@ -131,9 +128,39 @@ function isubmission_curl( $api_key, $data ) {
 	return $response;
 }
 
-function isubmission_is_connected() {
+function isubmission_get_connection_status() {
 
-	return get_option( 'isubmission_is_connected' );
+	$connection_statuses = array(
+		'fail'                => __( 'Connexion unsuccessful!', ISUBMISSION_ID_LANGUAGES ),
+		'ok'                  => __( 'Connexion successfull!', ISUBMISSION_ID_LANGUAGES ),
+		'blocked_by_firewall' => __( 'A firewall seems to block the connection of the plugin. You must unblock the IP 5.179.192.81 so that the connection can be made!', ISUBMISSION_ID_LANGUAGES ),
+		'wrong_token'         => __( 'Mauvais jeton', ISUBMISSION_ID_LANGUAGES ),
+	);
+
+	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+
+	if ( ! empty( $isubmission_options['isubmission_connection_status'] ) && array_key_exists( $isubmission_options['isubmission_connection_status'], $connection_statuses ) ) {
+
+		if ( 'ok' === $isubmission_options['isubmission_connection_status'] ) {
+
+			return isubmission_get_styled_status( $connection_statuses[ $isubmission_options['isubmission_connection_status'] ] );
+		} else {
+
+			return isubmission_get_styled_status( $connection_statuses[ $isubmission_options['isubmission_connection_status'] ], false );
+		}
+	}
+
+	return isubmission_get_styled_status( $connection_statuses['fail'], false );
+}
+
+function isubmission_get_styled_status( $message, $is_successful = true ) {
+
+	if ( $is_successful ) {
+
+		return '<span style="color: #00FF00;"><span style="font-size: 25px; vertical-align: middle;">&#10003;</span>' . $message . '</span>';
+	}
+
+	return '<span style="color: #FF0000;"><span style="font-size: 25px; vertical-align: middle;">&#10005;</span>' . $message . '</span>';
 }
 
 function isubmission_pre_save_admin( $container, $activeTab, $options ) {

@@ -181,10 +181,37 @@ function isubmission_check_connection_func() {
 	}
 
 	$response = isubmission_curl( $isubmission_options['isubmission_api_key'], $data );
-    $parsedResponse = json_decode($response, true);
+	$parsed_response = json_decode($response, true);
 
-    $isubmission_options['isubmission_is_connected'] = $parsedResponse['status'] === "ok" ? true : false;
-	update_option( 'isubmission_options', maybe_serialize( $isubmission_options ) );
+    isubmission_set_connection_status( $parsed_response );
 }
 
 add_action( 'isubmission_check_connection', 'isubmission_check_connection_func' );
+
+function isubmission_set_connection_status( $parsed_response ) {
+
+	if ( ! empty( $parsed_response['status'] ) ) {
+
+		if ( $parsed_response['status'] === "ok" ) {
+
+			$connection_status = 'ok';
+		} else if ( ! empty( $parsed_response['code'] ) && 'blocked_by_firewall' === $parsed_response['code'] ) {
+
+			$connection_status = 'blocked_by_firewall';
+		} else {
+
+			$connection_status = 'fail';
+		}
+
+	} else if ( 'wrong_token' === $parsed_response ) {
+
+		$connection_status = 'wrong_token';
+	} else {
+
+		$connection_status = 'fail';
+	}
+
+	$isubmission_options = maybe_unserialize( get_option( 'isubmission_options' ) );
+	$isubmission_options['isubmission_connection_status'] = $connection_status;
+	update_option( 'isubmission_options', maybe_serialize( $isubmission_options ) );
+}

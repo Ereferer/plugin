@@ -13,22 +13,12 @@ $dashboardTab->createOption( array(
     'type'  => 'heading',
 ) );
 // ----------------------------------------
-$isubmission_status = '';
-
-if ( isubmission_is_connected() ) {
-
-	$isubmission_status = '<span style="color: #00FF00;"><span style="font-size: 25px; vertical-align: middle;">&#10003;</span>' . __( 'Connexion successfull!', ISUBMISSION_ID_LANGUAGES ) . '</span>';
-} else {
-
-	$isubmission_status = '<span style="color: #FF0000;"><span style="font-size: 25px; vertical-align: middle;">&#10005;</span>' . __( 'Connexion unsuccessful!', ISUBMISSION_ID_LANGUAGES ) . '</span>';
-}
-
 $dashboardTab->createOption( array(
 	'id'    => 'isubmission_api_key',
 	'name'  => __( 'Clé API', ISUBMISSION_ID_LANGUAGES ),
 	'type'  => 'text',
 	'desc'  => __( 'Renseignez votre clé (API)', ISUBMISSION_ID_LANGUAGES ),
-	'unit'  => $isubmission_status
+	'unit'  => isubmission_get_connection_status()
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(
