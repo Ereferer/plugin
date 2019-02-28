@@ -98,7 +98,12 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 
 	$response = isubmission_curl( $isubmission_options['isubmission_api_key'], $data );
 
-	isubmission_check_connection_func();
+    $parsedResponse = json_decode($response, true);
+    if ( $parsedResponse['status'] !== "ok" ) {
+        update_option( 'isubmission_is_connected', false);
+    }else{
+        update_option( 'isubmission_is_connected', true);
+    }
 }
 
 add_action( 'tf_save_admin_isubmission', 'isubmission_save_options', 10, 3 );

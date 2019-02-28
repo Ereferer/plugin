@@ -181,8 +181,9 @@ function isubmission_check_connection_func() {
 	}
 
 	$response = isubmission_curl( $isubmission_options['isubmission_api_key'], $data );
+    $parsedResponse = json_decode($response, true);
 
-	$isubmission_options['isubmission_is_connected'] = $response === '"OK"' ? true : false;
+    $isubmission_options['isubmission_is_connected'] = $parsedResponse['status'] === "ok" ? true : false;
 	update_option( 'isubmission_options', maybe_serialize( $isubmission_options ) );
 }
 
