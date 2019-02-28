@@ -195,17 +195,14 @@ function isubmission_set_connection_status( $parsed_response ) {
 		if ( $parsed_response['status'] === "ok" ) {
 
 			$connection_status = 'ok';
-		} else if ( ! empty( $parsed_response['code'] ) && 'blocked_by_firewall' === $parsed_response['code'] ) {
+		} else if ( ! empty( $parsed_response['code'] ) ) {
 
-			$connection_status = 'blocked_by_firewall';
+			$connection_status = $parsed_response['code'];
 		} else {
 
 			$connection_status = 'fail';
 		}
 
-	} else if ( 'wrong_token' === $parsed_response ) {
-
-		$connection_status = 'wrong_token';
 	} else {
 
 		$connection_status = 'fail';
