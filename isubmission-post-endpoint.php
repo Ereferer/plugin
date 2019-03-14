@@ -43,6 +43,7 @@ class Isubmission_Post_Endpoint {
                 'code' => 'success_connection',
                 'plugin_url'  => plugin_dir_url( __FILE__ ) . $this->isubmission_options->getOption( 'isubmission_file_endpoint' ),
                 'message'     => __( 'Success connection', ISUBMISSION_ID_LANGUAGES ),
+                'version' => isubmission_get_version(),
             ) );
         } else {
 

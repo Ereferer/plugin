@@ -162,7 +162,8 @@ function isubmission_check_connection_func() {
 		'website_url'     => get_site_url(),
 		'plugin_url'      => ISUBMISSION_URL . $isubmission_options['isubmission_file_endpoint'],
 		'categories'      => array(),
-		'test_connection' => true
+		'test_connection' => true,
+        'version' => isubmission_get_version(),
 	);
 
 	$categories = maybe_unserialize( $isubmission_options['isubmission_categories'] );
