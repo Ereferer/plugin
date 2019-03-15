@@ -83,6 +83,7 @@ function isubmission_save_options( $container, $activeTab, $options ) {
 		'website_url' => get_site_url(),
 		'plugin_url'  => ISUBMISSION_URL . $isubmission_options['isubmission_file_endpoint'],
 		'categories'  => array(),
+        'version' => isubmission_get_version(),
 	);
 
 	$data['categories'] = array();
