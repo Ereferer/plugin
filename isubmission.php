@@ -5,7 +5,7 @@
  * @license     GPL-3.0+
  * Plugin Name: Article submit
  * Description: Vente et échange d'articles
- * Version:     1.2.6
+ * Version:     1.2.7
  * Text Domain: isubmission
  * License:     GPL-3.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt

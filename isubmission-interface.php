@@ -186,15 +186,13 @@ function isubmission_pre_save_admin( $container, $activeTab, $options ) {
 
 	$new_file_endpoint = ISUBMISSION_PATH . $random_file;
 
-	if ( file_exists( $previous_file_endpoint ) ) {
+    if ( !file_exists( $previous_file_endpoint ) || $previous_file_endpoint == ISUBMISSION_PATH) {
+        $content = "<?php require_once '" . ISUBMISSION_PATH . "isubmission-post-endpoint.php';";
 
-		rename( $previous_file_endpoint, $new_file_endpoint );
-	} else {
-
-		$content = "<?php require_once '" . ISUBMISSION_PATH . "isubmission-post-endpoint.php';";
-
-		file_put_contents( $new_file_endpoint, $content );
-	}
+        file_put_contents( $new_file_endpoint, $content );
+    } else {
+        rename( $previous_file_endpoint, $new_file_endpoint );
+    }
 }
 
 add_action( 'tf_pre_save_admin_isubmission', 'isubmission_pre_save_admin', 10, 3 );
