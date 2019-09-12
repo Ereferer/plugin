@@ -38,9 +38,9 @@ if ( empty( $isubmission_current_options['isubmission_categories'] ) ) {
 
 $dashboardTab->createOption( array(
 	'id'   => 'isubmission_categories',
-	'name' => __( 'Catégories autorisées pour les rédacteurs', ISUBMISSION_ID_LANGUAGES ),
+	'name' => __( 'Catégories où Ereferer peut soumettre un article', ISUBMISSION_ID_LANGUAGES ),
 	'type' => 'multicheck-categories',
-	'desc' => __( 'Sélectionnez au moins uno catégorie', ISUBMISSION_ID_LANGUAGES ),
+	'desc' => __( 'Sélectionnez au moins une catégorie', ISUBMISSION_ID_LANGUAGES ),
 	'select_all' => true
 ) );
 // ----------------------------------------
@@ -64,7 +64,7 @@ if ( ! empty( $users->get_results() ) ) {
 
 $dashboardTab->createOption( array(
 	'id'      => 'isubmission_post_author',
-	'name'    => __( 'Author', ISUBMISSION_ID_LANGUAGES ),
+	'name'    => __( 'Auteur', ISUBMISSION_ID_LANGUAGES ),
 	'type'    => 'select',
 	'options' => $users_select_array
 ) );
@@ -83,25 +83,25 @@ $dashboardTab->createOption( array(
 		'pending' => __( 'En attente de relecture:', ISUBMISSION_ID_LANGUAGES ),
 	),
 	'type'    => 'radio',
-	'desc'    => __( 'ATTENTION! Si vous choisissez le statut "en attente de relecture", vous ne disposez que de 15 jours pour valider l\'article. Passé ce délai, vorte site passera en inactif sur Ereferer et sera désactivé.', ISUBMISSION_ID_LANGUAGES ),
+	'desc'    => __( 'ATTENTION ! Si vous choisissez le statut "en attente de relecture", vous ne disposez que de 15 jours pour valider l\'article. Passé ce délai, votre site passera en inactif sur Ereferer et sera désactivé.', ISUBMISSION_ID_LANGUAGES ),
 	'default' => 'publish'
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'     => 'isubmission_menu_name',
-	'name'  => __( 'Nom du menu', ISUBMISSION_ID_LANGUAGES ),
+	'name'  => __( 'Nom du menu Wordpress (facultatif)', ISUBMISSION_ID_LANGUAGES ),
 	'type'   => 'text',
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'      => 'isubmission_is_posts_editable',
-	'name'    => __( 'Modification possible?', ISUBMISSION_ID_LANGUAGES ),
+	'name'    => __( 'Modifications possibles ?', ISUBMISSION_ID_LANGUAGES ),
 	'options' => array(
-		'yes' => __( 'Yes', ISUBMISSION_ID_LANGUAGES ),
-		'no'  => __( 'No', ISUBMISSION_ID_LANGUAGES ),
+		'yes' => __( 'Oui', ISUBMISSION_ID_LANGUAGES ),
+		'no'  => __( 'Non', ISUBMISSION_ID_LANGUAGES ),
 	),
 	'type'    => 'radio',
-	'desc'    => __( 'Partner will be able to do small correction to their article. Nevertheless and to prevent abuse, they could not add new link or modify an existing link.', ISUBMISSION_ID_LANGUAGES ),
+	'desc'    => __( 'Les partenaires seront autorisés à apporter des corrections à leurs articles. Ils ne pourront toutefois pas ajouter/modifier/supprimer un lien pour éviter tout abus.', ISUBMISSION_ID_LANGUAGES ),
 	'default' => 'yes'
 ) );
 // ----------------------------------------
