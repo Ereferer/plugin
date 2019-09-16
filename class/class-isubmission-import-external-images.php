@@ -88,7 +88,7 @@ class Isubmission_Import_External_Images {
 
 		if ( empty( $matches[0] ) ) {
 
-			return __( 'Pas d\'image', ISUBMISSION_ID_LANGUAGES );
+			return __( 'Image is empty', ISUBMISSION_ID_LANGUAGES );
 		}
 
 		$temp_file = download_url( $post_image['src'] );
