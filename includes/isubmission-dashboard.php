@@ -79,8 +79,8 @@ $dashboardTab->createOption( array(
 	'id'      => 'isubmission_post_status',
 	'name'    => __( 'Statut des articles envoyés', ISUBMISSION_ID_LANGUAGES ),
 	'options' => array(
-		'publish' => __( 'Directement publié (recommandé):', ISUBMISSION_ID_LANGUAGES ),
-		'pending' => __( 'En attente de relecture:', ISUBMISSION_ID_LANGUAGES ),
+		'publish' => __( 'Directement publié (recommandé)', ISUBMISSION_ID_LANGUAGES ),
+		'pending' => __( 'En attente de relecture', ISUBMISSION_ID_LANGUAGES ),
 	),
 	'type'    => 'radio',
 	'desc'    => __( 'ATTENTION ! Si vous choisissez le statut "en attente de relecture", vous ne disposez que de 15 jours pour valider l\'article. Passé ce délai, votre site passera en inactif sur Ereferer et sera désactivé.', ISUBMISSION_ID_LANGUAGES ),
