@@ -1,20 +1,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-10-25 11:55+0200\n"
-"PO-Revision-Date: 2017-10-25 11:55+0200\n"
+"POT-Creation-Date: 2019-09-16 18:31+0300\n"
+"PO-Revision-Date: 2019-09-16 18:32+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: class/class-isubmission-import-external-images.php:91
+msgid "Image is empty"
+msgstr "Pas d'image"
 
 #: class/isubmission-class-lists.php:64
 msgid "this entry"
@@ -48,39 +52,87 @@ msgstr "Articles soumis"
 msgid "Delete All list"
 msgstr "Supprimer toute la liste"
 
-#: includes/isubmission-dashboard.php:13
+#: includes/isubmission-dashboard.php:12
 msgid "API"
 msgstr "API"
 
-#: includes/isubmission-dashboard.php:19
-msgid "Api key"
+#: includes/isubmission-dashboard.php:18
+msgid "API key"
 msgstr "Clé API"
 
-#: includes/isubmission-dashboard.php:21
-msgid "Fill in your Api key"
+#: includes/isubmission-dashboard.php:20
+msgid "Fill in your key (API)"
 msgstr "Renseignez votre clé (API)"
 
-#: includes/isubmission-dashboard.php:25 isubmission-interface.php:33
+#: includes/isubmission-dashboard.php:25 isubmission-interface.php:40
 msgid "Options"
-msgstr "Options"
+msgstr "Les options"
 
-#: includes/isubmission-dashboard.php:31
-msgid "Authorized Categories for Editors"
-msgstr "Catégories autorisées pour les rédacteurs"
+#: includes/isubmission-dashboard.php:35
+#| msgid "select at least one category"
+msgid "Please tick at least 1 category."
+msgstr "Veuillez cocher au moins 1 catégorie."
 
-#: includes/isubmission-dashboard.php:33
-msgid "select at least one category"
+#: includes/isubmission-dashboard.php:41
+msgid "Categories where Ereferer can submit an article"
+msgstr "Catégories où Ereferer peut soumettre un article"
+
+#: includes/isubmission-dashboard.php:43
+msgid "Select at least one category"
 msgstr "Sélectionnez au moins une catégorie"
 
-#: includes/isubmission-dashboard.php:38
-msgid "Website URL"
-msgstr "URL du site web"
+#: includes/isubmission-dashboard.php:67
+msgid "Author"
+msgstr "Auteur"
 
-#: includes/isubmission-dashboard.php:45
-msgid "Plugin URL"
-msgstr "URL du plugin"
+#: includes/isubmission-dashboard.php:80
+msgid "Status of sent items"
+msgstr "Statut des articles envoyés"
 
-#: includes/isubmission-dashboard.php:55
+#: includes/isubmission-dashboard.php:82
+msgid "Directly published (recommended):"
+msgstr "Directement publié (recommandé):"
+
+#: includes/isubmission-dashboard.php:83
+msgid "Waiting for proofreading:"
+msgstr "En attente de relecture:"
+
+#: includes/isubmission-dashboard.php:86
+msgid ""
+"WARNING! If you choose the status \"pending replay\", you only have 15 days to "
+"validate the article. After this time, your site will go into idle on Ereferer "
+"and will be disabled."
+msgstr ""
+"ATTENTION! Si vous choisissez le statut \"en attente de relecture\", vous ne "
+"disposez que de 15 jours pour valider l'article. Passé ce délai, votre site "
+"passera en inactif sur Ereferer et sera désactivé."
+
+#: includes/isubmission-dashboard.php:92
+msgid "Wordpress menu name (optional)"
+msgstr "Nom du menu Wordpress (facultatif)"
+
+#: includes/isubmission-dashboard.php:98
+msgid "Are modifications possible?"
+msgstr "Modifications possibles?"
+
+#: includes/isubmission-dashboard.php:100
+msgid "Yes"
+msgstr "Oui"
+
+#: includes/isubmission-dashboard.php:101
+msgid "No"
+msgstr "Non"
+
+#: includes/isubmission-dashboard.php:104
+msgid ""
+"Partners will be allowed to make corrections to their articles. However, they "
+"will not be able to add / modify / delete a link to prevent abuse."
+msgstr ""
+"Les partenaires seront autorisés à apporter des corrections à leurs articles. "
+"Ils ne pourront toutefois pas ajouter/modifier/supprimer un lien pour éviter "
+"tout abus."
+
+#: includes/isubmission-dashboard.php:121
 #, php-format
 msgid "Fill in all <a href=\"%s\">dashboard options</a>"
 msgstr "Renseignez toutes <a href=\"%s\">les options</a>"
@@ -103,13 +155,81 @@ msgstr "Toutes les entrées ont été supprimé avec succès"
 msgid "Back to options"
 msgstr "Retour aux options"
 
-#: isubmission-interface.php:22
+#: isubmission-interface.php:29
 msgid "All items"
 msgstr "Tous les articles"
 
-#: isubmission-interface.php:52 lib/titan-framework/lib/class-option-save.php:21
-msgid "Save Changes"
-msgstr "Sauvegardez les changements"
+#: isubmission-interface.php:59
+msgid "Save"
+msgstr "Enregistrer"
+
+#: isubmission-interface.php:136
+msgid "Unsuccessful connection!"
+msgstr "Connexion unsuccessful!"
+
+#: isubmission-interface.php:137
+msgid "Login successful!"
+msgstr "Connexion réussies!"
+
+#: isubmission-interface.php:138
+msgid ""
+"A firewall seems to block the connection of the plugin. You must unblock the IP "
+"5.179.192.81 so that the connection can be made!"
+msgstr ""
+"A firewall seems to block the connection of the plugin. You must unblock the IP "
+"5.179.192.81 so that the connection can be made!"
+
+#: isubmission-interface.php:139
+msgid "The connection failed. Check that you have added your site to Ereferer."
+msgstr ""
+"La connexion a échoué. Vérifiez que vous ayez bien ajouté votre site sur "
+"Ereferer."
+
+#: isubmission-post-endpoint.php:27
+msgid "Incorrect API key."
+msgstr "Clé d'API incorrecte."
+
+#: isubmission-post-endpoint.php:45
+msgid "Success connection"
+msgstr "Connexion de succès"
+
+#: isubmission-post-endpoint.php:55
+msgid "Post id can't be empty."
+msgstr "L'identifiant du post ne peut être vide."
+
+#: isubmission-post-endpoint.php:66
+msgid "Post title and content can't be empty."
+msgstr "Le titre et le contenu de l'article ne peuvent être vides."
+
+#: isubmission-post-endpoint.php:92
+msgid "Posts are not editable."
+msgstr "Les messages ne sont pas modifiables."
+
+#: isubmission-post-endpoint.php:188
+msgid "Success"
+msgstr "Succès"
+
+#: lib/plugin-update-checker/Puc/v4p4/Plugin/Ui.php:54
+msgid "View details"
+msgstr "Voir les options"
+
+#: lib/plugin-update-checker/Puc/v4p4/Plugin/Ui.php:77
+#, php-format
+msgid "More information about %s"
+msgstr "Informations sur la licence"
+
+#: lib/plugin-update-checker/Puc/v4p4/Plugin/Ui.php:128
+msgid "Check for updates"
+msgstr ""
+
+#: lib/plugin-update-checker/Puc/v4p4/Plugin/Ui.php:223
+#, php-format
+msgid "Unknown update checker status \"%s\""
+msgstr ""
+
+#: lib/plugin-update-checker/Puc/v4p4/Vcs/PluginUpdateChecker.php:98
+msgid "There is no changelog available."
+msgstr ""
 
 #: lib/titan-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:189
 #, php-format
@@ -135,7 +255,7 @@ msgstr "Vous ne possédez les droits pour installer ce plugin"
 msgid "Error"
 msgstr "Erreur"
 
-#: lib/titan-framework/lib/class-admin-page.php:114
+#: lib/titan-framework/lib/class-admin-page.php:124
 msgid ""
 "<em>Options Page Created with <a href='http://titanframework.net?"
 "utm_source=admin&utm_medium=admin footer'>Titan Framework</a></em>"
@@ -143,33 +263,33 @@ msgstr ""
 "<em>Page d'options créées avec le <a href='http://titanframework.net?"
 "utm_source=admin&utm_medium=admin footer'>Framework Titan</a></em>"
 
-#: lib/titan-framework/lib/class-admin-page.php:333
+#: lib/titan-framework/lib/class-admin-page.php:370
 msgid "Settings saved."
 msgstr "Paramètres sauvegardés."
 
-#: lib/titan-framework/lib/class-admin-page.php:335
+#: lib/titan-framework/lib/class-admin-page.php:372
 msgid "Settings reset to default."
 msgstr "Réinitialisation des paramètres par défaut."
 
 #: lib/titan-framework/lib/class-customizer.php:33
-#: lib/titan-framework/lib/class-meta-box.php:36
+#: lib/titan-framework/lib/class-meta-box.php:37
 msgid "More Options"
 msgstr "Plus d'options"
 
-#: lib/titan-framework/lib/class-option-ajax-button.php:29
-#: lib/titan-framework/lib/class-option-ajax-button.php:32
+#: lib/titan-framework/lib/class-option-ajax-button.php:30
+#: lib/titan-framework/lib/class-option-ajax-button.php:33
 msgid "Security check failed, please refresh the page and try again."
 msgstr "La vérification de la sécurité a échoué, actualisez la page et réessayez."
 
-#: lib/titan-framework/lib/class-option-ajax-button.php:86
+#: lib/titan-framework/lib/class-option-ajax-button.php:87
 msgid "Something went wrong"
 msgstr "Quelque chose s'est mal passé"
 
-#: lib/titan-framework/lib/class-option-ajax-button.php:91
+#: lib/titan-framework/lib/class-option-ajax-button.php:95
 msgid "Click me"
 msgstr "Cliquez moi"
 
-#: lib/titan-framework/lib/class-option-ajax-button.php:96
+#: lib/titan-framework/lib/class-option-ajax-button.php:100
 msgid "Please wait..."
 msgstr "Attendez..."
 
@@ -277,15 +397,24 @@ msgstr "Activé"
 msgid "Disabled"
 msgstr "Désactivé"
 
-#: lib/titan-framework/lib/class-option-multicheck-pages.php:27
-#: lib/titan-framework/lib/class-option-multicheck-pages.php:48
-#: lib/titan-framework/lib/class-option-multicheck-posts.php:34
-#: lib/titan-framework/lib/class-option-multicheck-posts.php:60
-#: lib/titan-framework/lib/class-option-select-pages.php:38
-#: lib/titan-framework/lib/class-option-select-posts.php:46
+#: lib/titan-framework/lib/class-option-multicheck-pages.php:28
+#: lib/titan-framework/lib/class-option-multicheck-pages.php:49
+#: lib/titan-framework/lib/class-option-multicheck-posts.php:35
+#: lib/titan-framework/lib/class-option-multicheck-posts.php:61
+#: lib/titan-framework/lib/class-option-select-pages.php:34
+#: lib/titan-framework/lib/class-option-select-posts.php:49
 #, php-format
 msgid "Untitled %s"
 msgstr "Sans titre %s"
+
+#: lib/titan-framework/lib/class-option-multicheck.php:40
+#: lib/titan-framework/lib/class-option-multicheck.php:189
+msgid "Select All"
+msgstr "Sélectionnez"
+
+#: lib/titan-framework/lib/class-option-save.php:21
+msgid "Save Changes"
+msgstr "Sauvegardez les changements"
 
 #: lib/titan-framework/lib/class-option-save.php:24
 msgid "Reset to Defaults"
@@ -297,20 +426,19 @@ msgstr ""
 "Etes vous sûr de vouloir remettre TOUTES les options à leurs valeurs par "
 "défaut ?"
 
-#: lib/titan-framework/lib/class-option-select-categories.php:37
-#: lib/titan-framework/lib/class-option-select-categories.php:104
-#: lib/titan-framework/lib/class-option-select-pages.php:30
-#: lib/titan-framework/lib/class-option-select-posts.php:38
-#: lib/titan-framework/lib/class-option-select-posts.php:112
+#: lib/titan-framework/lib/class-option-select-categories.php:35
+#: lib/titan-framework/lib/class-option-select-pages.php:27
+#: lib/titan-framework/lib/class-option-select-post-types.php:27
+#: lib/titan-framework/lib/class-option-select-posts.php:43
 msgid "Select"
 msgstr "Sélectionnez"
 
-#: lib/titan-framework/lib/class-option.php:111
+#: lib/titan-framework/lib/class-option.php:119
 #, php-format
 msgid "Option type or extended class %s does not exist."
 msgstr "Le type d'option ou la classe étendue %s n'existe pas"
 
-#: lib/titan-framework/lib/class-titan-framework.php:170
+#: lib/titan-framework/lib/class-titan-framework.php:190
 #, php-format
 msgid ""
 "All option IDs per namespace must be unique. The id %s has been used multiple "
@@ -319,12 +447,12 @@ msgstr ""
 "Tous IDs d'options par namespace doit être unique. Cet id %s a été utilisé "
 "plusieurs fois."
 
-#: lib/titan-framework/lib/class-titan-framework.php:407
+#: lib/titan-framework/lib/class-titan-framework.php:445
 #, php-format
 msgid "%s needs a %s parameter."
 msgstr "%s a besoin d'un paramètre %s."
 
-#: lib/titan-framework/lib/class-titan-framework.php:417
+#: lib/titan-framework/lib/class-titan-framework.php:455
 #, php-format
 msgid "Container of type %s, does not exist."
 msgstr "Le type de conteneur %s n'existe pas."
@@ -345,26 +473,32 @@ msgstr "Le Framework Titan a besoin d'être activé"
 msgid "Click here to go to the plugins page and activate it."
 msgstr "Cliquez ici pour aller à la page des plugins et l'activer."
 
-#: lib/titan-framework/titan-framework.php:173
+#: lib/titan-framework/titan-framework.php:188
 msgid "Documentation"
 msgstr "Documentation"
 
-#: lib/titan-framework/titan-framework.php:177
+#: lib/titan-framework/titan-framework.php:192
 msgid "GitHub Repo"
 msgstr "GitHub Repo"
 
-#: lib/titan-framework/titan-framework.php:181
+#: lib/titan-framework/titan-framework.php:196
 msgid "Issue Tracker"
 msgstr "Issue Tracker"
+
+#~ msgid "Authorized Categories for Editors"
+#~ msgstr "Catégories autorisées pour les rédacteurs"
+
+#~ msgid "Website URL"
+#~ msgstr "URL du site web"
+
+#~ msgid "Plugin URL"
+#~ msgstr "URL du plugin"
 
 #~ msgid "Unknown title"
 #~ msgstr "Titre inconnu"
 
 #~ msgid "Post"
 #~ msgstr "Articles soumis"
-
-#~ msgid "None"
-#~ msgstr "Aucun"
 
 #~ msgid "--"
 #~ msgstr "--"
@@ -448,9 +582,6 @@ msgstr "Issue Tracker"
 #~ msgid "Back to the products of this list"
 #~ msgstr "Retour aux produits de la liste"
 
-#~ msgid "Save"
-#~ msgstr "Sauvegarder"
-
 #~ msgid "OR"
 #~ msgstr "OU"
 
@@ -505,9 +636,6 @@ msgstr "Issue Tracker"
 
 #~ msgid "Edit type"
 #~ msgstr "Modifier le statut"
-
-#~ msgid "Status Title"
-#~ msgstr "Titre"
 
 #~ msgid "Status name of your product."
 #~ msgstr "Nom du statut du produit"
@@ -583,9 +711,6 @@ msgstr "Issue Tracker"
 
 #~ msgid "Active"
 #~ msgstr "Activé"
-
-#~ msgid "List saved successfully"
-#~ msgstr "Liste sauvegardée avec succès"
 
 #~ msgid "List updated successfully"
 #~ msgstr "Liste modifiée avec succès"
@@ -891,9 +1016,6 @@ msgstr "Issue Tracker"
 #~ msgid "Wordpress Site Name"
 #~ msgstr "Nom du site Wordpress"
 
-#~ msgid "Wordpress Site Description"
-#~ msgstr "Description du site Wordpress"
-
 #~ msgid ""
 #~ "Hello,<br><br>A product (or more) has just been purchased on one of your "
 #~ "lists:<br><br>List Name: {ILIST_NAME}<br>Product(s) Name: {ILIST_PRODUCT}"
@@ -981,9 +1103,6 @@ msgstr "Issue Tracker"
 #~ msgstr ""
 #~ "Une erreur est survenue lors de la vérification de votre licence."
 #~ "<br>Contactez le support"
-
-#~ msgid "License informations"
-#~ msgstr "Informations sur la licence"
 
 #~ msgid "The products"
 #~ msgstr "Les produits"
@@ -1114,9 +1233,6 @@ msgstr "Issue Tracker"
 
 #~ msgid "Search Choice possible"
 #~ msgstr "Choix possibles de la recherche"
-
-#~ msgid "Choice(s) possible(s)"
-#~ msgstr "Choix possible(s)"
 
 #~ msgid ""
 #~ "Search by email<br><span class=\"ilist-style-italic ilist-style-description"
@@ -1289,9 +1405,6 @@ msgstr "Issue Tracker"
 
 #~ msgid "Select options"
 #~ msgstr "Sélectionnez des options"
-
-#~ msgid "View options"
-#~ msgstr "Voir les options"
 
 #~ msgid "Read More"
 #~ msgstr "Lire plus"

@@ -15,9 +15,9 @@ $dashboardTab->createOption( array(
 // ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'    => 'isubmission_api_key',
-	'name'  => __( 'Clé API', ISUBMISSION_ID_LANGUAGES ),
+	'name'  => __( 'API key', ISUBMISSION_ID_LANGUAGES ),
 	'type'  => 'text',
-	'desc'  => __( 'Renseignez votre clé (API)', ISUBMISSION_ID_LANGUAGES ),
+	'desc'  => __( 'Fill in your key (API)', ISUBMISSION_ID_LANGUAGES ),
 	'unit'  => isubmission_get_connection_status()
 ) );
 // ----------------------------------------
@@ -38,9 +38,9 @@ if ( empty( $isubmission_current_options['isubmission_categories'] ) ) {
 
 $dashboardTab->createOption( array(
 	'id'   => 'isubmission_categories',
-	'name' => __( 'Catégories où Ereferer peut soumettre un article', ISUBMISSION_ID_LANGUAGES ),
+	'name' => __( 'Categories where Ereferer can submit an article', ISUBMISSION_ID_LANGUAGES ),
 	'type' => 'multicheck-categories',
-	'desc' => __( 'Sélectionnez au moins une catégorie', ISUBMISSION_ID_LANGUAGES ),
+	'desc' => __( 'Select at least one category', ISUBMISSION_ID_LANGUAGES ),
 	'select_all' => true
 ) );
 // ----------------------------------------
@@ -64,7 +64,7 @@ if ( ! empty( $users->get_results() ) ) {
 
 $dashboardTab->createOption( array(
 	'id'      => 'isubmission_post_author',
-	'name'    => __( 'Auteur', ISUBMISSION_ID_LANGUAGES ),
+	'name'    => __( 'Author', ISUBMISSION_ID_LANGUAGES ),
 	'type'    => 'select',
 	'options' => $users_select_array
 ) );
@@ -77,31 +77,31 @@ $dashboardTab->createOption( array(
 // ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'      => 'isubmission_post_status',
-	'name'    => __( 'Statut des articles envoyés', ISUBMISSION_ID_LANGUAGES ),
+	'name'    => __( 'Status of sent items', ISUBMISSION_ID_LANGUAGES ),
 	'options' => array(
-		'publish' => __( 'Directement publié (recommandé)', ISUBMISSION_ID_LANGUAGES ),
-		'pending' => __( 'En attente de relecture', ISUBMISSION_ID_LANGUAGES ),
+		'publish' => __( 'Directly published (recommended):', ISUBMISSION_ID_LANGUAGES ),
+		'pending' => __( 'Waiting for proofreading:', ISUBMISSION_ID_LANGUAGES ),
 	),
 	'type'    => 'radio',
-	'desc'    => __( 'ATTENTION ! Si vous choisissez le statut "en attente de relecture", vous ne disposez que de 15 jours pour valider l\'article. Passé ce délai, votre site passera en inactif sur Ereferer et sera désactivé.', ISUBMISSION_ID_LANGUAGES ),
+	'desc'    => __( 'WARNING! If you choose the status "pending replay", you only have 15 days to validate the article. After this time, your site will go into idle on Ereferer and will be disabled.', ISUBMISSION_ID_LANGUAGES ),
 	'default' => 'publish'
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'     => 'isubmission_menu_name',
-	'name'  => __( 'Nom du menu Wordpress (facultatif)', ISUBMISSION_ID_LANGUAGES ),
+	'name'  => __( 'Wordpress menu name (optional)', ISUBMISSION_ID_LANGUAGES ),
 	'type'   => 'text',
 ) );
 // ----------------------------------------
 $dashboardTab->createOption( array(
 	'id'      => 'isubmission_is_posts_editable',
-	'name'    => __( 'Modifications possibles ?', ISUBMISSION_ID_LANGUAGES ),
+	'name'    => __( 'Are modifications possible?', ISUBMISSION_ID_LANGUAGES ),
 	'options' => array(
-		'yes' => __( 'Oui', ISUBMISSION_ID_LANGUAGES ),
-		'no'  => __( 'Non', ISUBMISSION_ID_LANGUAGES ),
+		'yes' => __( 'Yes', ISUBMISSION_ID_LANGUAGES ),
+		'no'  => __( 'No', ISUBMISSION_ID_LANGUAGES ),
 	),
 	'type'    => 'radio',
-	'desc'    => __( 'Les partenaires seront autorisés à apporter des corrections à leurs articles. Ils ne pourront toutefois pas ajouter/modifier/supprimer un lien pour éviter tout abus.', ISUBMISSION_ID_LANGUAGES ),
+	'desc'    => __( 'Partners will be allowed to make corrections to their articles. However, they will not be able to add / modify / delete a link to prevent abuse.', ISUBMISSION_ID_LANGUAGES ),
 	'default' => 'yes'
 ) );
 // ----------------------------------------
