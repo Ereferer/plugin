@@ -134,7 +134,7 @@ function isubmission_get_connection_status() {
 
 	$connection_statuses = array(
 		'fail'                => __( 'Connexion unsuccessful!', ISUBMISSION_ID_LANGUAGES ),
-		'ok'                  => __( 'Connexion réussies !', ISUBMISSION_ID_LANGUAGES ),
+		'ok'                  => __( 'Connexion réussie !', ISUBMISSION_ID_LANGUAGES ),
 		'blocked_by_firewall' => __( 'A firewall seems to block the connection of the plugin. You must unblock the IP 5.179.192.81 so that the connection can be made!', ISUBMISSION_ID_LANGUAGES ),
 		'wrong_token'         => __( 'La connexion a échoué. Vérifiez que vous ayez bien ajouté votre site sur Ereferer.', ISUBMISSION_ID_LANGUAGES ),
 	);
