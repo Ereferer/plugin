@@ -276,12 +276,12 @@ class Isubmission_Post_Endpoint {
 
         // HEADER: Get the access token from the header
         if ( ! empty( $headers ) ) {
-
             if ( preg_match( '/Bearer\s(\S+)/', $headers, $matches ) ) {
 
                 return $matches[1];
             }
         }
+
 
         return null;
     }
