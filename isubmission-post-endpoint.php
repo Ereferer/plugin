@@ -72,8 +72,11 @@ class Isubmission_Post_Endpoint {
             $post_status = $this->isubmission_options->getOption( 'isubmission_post_status' );
             $post_author = $this->isubmission_options->getOption( 'isubmission_post_author' );
 
+            $post_title = self::clear_received_data( $data['post_title'] );
+            $post_title = preg_replace( '/%e2%80%89/', '', $post_title );
+
 	        $post_data = array(
-		        'post_title'    => self::clear_received_data( $data['post_title'] ),
+		        'post_title'    => $post_title,
 		        'post_content'  => self::clear_received_data( $data['post_content'] ),
 		        'post_status'   => empty( $post_status ) ? 'publish' : $post_status,
 		        'post_author'   => empty( $post_author ) ? 1 : $post_author,
