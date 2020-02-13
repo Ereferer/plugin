@@ -236,16 +236,18 @@ class Isubmission_Post_Endpoint {
 	    return preg_replace( '/[\x00-\x1F\x80-\xFF]/', '', $data );
     }
 
-    private function get_post_id_by_place_post_id( $place_post_id ) {
+	private function get_post_id_by_place_post_id( $place_post_id ) {
 
-        global $wpdb, $plugin_table_isub;
+		global $wpdb, $plugin_table_isub;
 
-        return $wpdb->get_var( $wpdb->prepare( "
-			SELECT post_id
-			FROM {$wpdb->prefix}$plugin_table_isub
-			WHERE place_post_id = %d
+		return $wpdb->get_var( $wpdb->prepare( "
+			SELECT ip.post_id
+			FROM {$wpdb->prefix}$plugin_table_isub ip
+				RIGHT JOIN {$wpdb->posts} p
+					ON ip.post_id = p.ID
+			WHERE ip.place_post_id = %d
 		", $place_post_id ) );
-    }
+	}
 
     /**
      * Get hearder Authorization
