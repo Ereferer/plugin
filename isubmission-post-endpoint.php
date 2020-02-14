@@ -77,7 +77,7 @@ class Isubmission_Post_Endpoint {
 
 	        $post_data = array(
 		        'post_title'    => $post_title,
-		        'post_content'  => self::clear_received_data( $data['post_content'] ),
+		        'post_content'  => $data['post_content'],
 		        'post_status'   => empty( $post_status ) ? 'publish' : $post_status,
 		        'post_author'   => empty( $post_author ) ? 1 : $post_author,
 		        'post_category' => ! empty( $data['categories'] ) ? self::clear_received_data( $data['categories'] ) : []
