@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) or die( 'Are you crazy!' );
 // Plugin DB Version / Table name       -=
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 global $isubmission_db_version, $plugin_table_isub;
-$isubmission_db_version = '7.0';
+$isubmission_db_version = '7.1';
 $plugin_table_isub      = "isubmission";
 
 /**
@@ -27,9 +27,9 @@ if ( ! function_exists( 'isubmission_install' ) ) {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name_isub (
-				id int(11) NOT NULL AUTO_INCREMENT,
-				post_id int(11) NOT NULL,
-				place_post_id int(11) NOT NULL,
+				id BIGINT(20) NOT NULL AUTO_INCREMENT,
+				post_id BIGINT(20) NOT NULL,
+				place_post_id BIGINT(20) NOT NULL,
 				`date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				image int(11) DEFAULT NULL,
 				PRIMARY KEY (id)
