@@ -164,11 +164,11 @@ class Isubmission_Post_Endpoint {
 
             if ( ! empty( $data['meta_title'] ) ) {
 
-                add_post_meta( $post_id, '_isubmission_meta_title', self::clear_received_data( $data['meta_title'] ) );
+                add_post_meta( $post_id, '_isubmission_meta_title', $data['meta_title'] );
 
                 if ( $is_yoast_active ) {
 
-                    update_post_meta( $post_id, '_yoast_wpseo_title', self::clear_received_data( $data['meta_title'] ) );
+                    update_post_meta( $post_id, '_yoast_wpseo_title', $data['meta_title'] );
                 }
             }
 
