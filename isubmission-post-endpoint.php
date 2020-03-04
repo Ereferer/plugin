@@ -79,10 +79,10 @@ class Isubmission_Post_Endpoint {
 		        'post_content'  => $data['post_content'],
 		        'post_status'   => empty( $post_status ) ? 'publish' : $post_status,
 		        'post_author'   => empty( $post_author ) ? 1 : $post_author,
-		        'post_category' => ! empty( $data['categories'] ) ? self::clear_received_data( $data['categories'] ) : []
+		        'post_category' => ! empty( $data['categories'] ) ? $data['categories'] : []
 	        );
 
-            $internal_post_id = $this->get_post_id_by_place_post_id( self::clear_received_data( $data['id'] ) );
+            $internal_post_id = $this->get_post_id_by_place_post_id( $data['id'] );
 
             if ( $internal_post_id ) {
 
@@ -123,7 +123,7 @@ class Isubmission_Post_Endpoint {
 
             if ( ! $internal_post_id ) {
 
-                $this->insert_row( $post_id, self::clear_received_data( $data['id'] ) );
+                $this->insert_row( $post_id, $data['id'] );
             }
 
             $import_external_images = new Isubmission_Import_External_Images();
@@ -143,7 +143,7 @@ class Isubmission_Post_Endpoint {
             if ( ! empty( $data['front_image'] ) ) {
 
                 $featured_image_result = $import_external_images->sideload( $post_id, array(
-                	'src' => self::clear_received_data( $data['front_image'] )
+                	'src' => $data['front_image']
                 ) );
 
                 if ( is_string( $featured_image_result ) ) {
@@ -174,16 +174,16 @@ class Isubmission_Post_Endpoint {
 
             if ( ! empty( $data['meta_description'] ) ) {
 
-                add_post_meta( $post_id, '_isubmission_meta_description', self::clear_received_data( $data['meta_description'] ) );
+                add_post_meta( $post_id, '_isubmission_meta_description', $data['meta_description'] );
 
                 if ( $is_yoast_active ) {
 
-                    update_post_meta( $post_id, '_yoast_wpseo_metadesc', self::clear_received_data( $data['meta_description'] ) );
+                    update_post_meta( $post_id, '_yoast_wpseo_metadesc', $data['meta_description'] );
                 }
             }
 
             if ( ! empty( $data['custom_field'] ) ) {
-                add_post_meta( $post_id, 'isubmission_image_source', self::clear_received_data( $data['custom_field'] ) );
+                add_post_meta( $post_id, 'isubmission_image_source', $data['custom_field'] );
             }
 
             wp_send_json( array(
@@ -210,7 +210,7 @@ class Isubmission_Post_Endpoint {
 
     private function is_bearer_token_valid() {
 
-	    $bearer_token = self::clear_received_data( $this->get_bearer_token() );
+	    $bearer_token = $this->get_bearer_token();
 
         $apy_key = $this->isubmission_options->getOption( 'isubmission_api_key' );
 
@@ -228,11 +228,6 @@ class Isubmission_Post_Endpoint {
                 'place_post_id' => $place_post_id
             )
         );
-    }
-
-    private static function clear_received_data( $data ) {
-
-	    return preg_replace( '/[\x00-\x1F\x80-\xFF]/', '', $data );
     }
 
 	private function get_post_id_by_place_post_id( $place_post_id ) {
