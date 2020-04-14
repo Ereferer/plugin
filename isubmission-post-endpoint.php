@@ -285,7 +285,7 @@ class Isubmission_Post_Endpoint {
 		    wp_send_json( array(
 			    'status'  => false,
 			    'code' => 'post_id_not_found',
-			    'message' => __( 'Post id not found 2.', ISUBMISSION_ID_LANGUAGES )
+			    'message' => __( 'Post id not found.', ISUBMISSION_ID_LANGUAGES )
 		    ) );
 	    }
     }
