@@ -169,7 +169,7 @@ msgstr "Connexion unsuccessful!"
 
 #: isubmission-interface.php:137
 msgid "Login successful!"
-msgstr "Connexion réussies!"
+msgstr "Connexion réussie!"
 
 #: isubmission-interface.php:138
 msgid ""
