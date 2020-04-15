@@ -56,6 +56,11 @@ class Isubmission_Post_Endpoint {
                 ) );
 
                 return;
+            } else if ( ! empty( $data['delete'] ) ) {
+
+            	$this->delete_post( $data['id'] );
+
+            	return;
             }
 
             if ( empty( $data['post_title'] ) || empty( $data['post_content'] ) ) {
@@ -228,6 +233,61 @@ class Isubmission_Post_Endpoint {
                 'place_post_id' => $place_post_id
             )
         );
+    }
+
+    private function delete_post( $place_post_id ) {
+
+	    $internal_post_id = $this->get_post_id_by_place_post_id( $place_post_id );
+
+	    if ( $internal_post_id ) {
+
+		    $deleted_post = wp_delete_post( $internal_post_id );
+
+		    if ( empty( $deleted_post ) ) {
+
+			    wp_send_json( array(
+				    'status'  => false,
+				    'code' => 'failed_delete',
+				    'message' => __( 'Failed to delete post.', ISUBMISSION_ID_LANGUAGES )
+			    ) );
+
+			    return;
+		    }
+
+		    global $wpdb, $plugin_table_isub;
+
+		    $deleted_rows = $wpdb->delete(
+			    $wpdb->prefix . $plugin_table_isub,
+			    array(
+				    'post_id' => $internal_post_id
+			    )
+		    );
+
+		    if ( false === $deleted_rows ) {
+
+			    wp_send_json( array(
+				    'status'  => false,
+				    'code' => 'failed_delete_relation',
+				    'message' => __( 'Failed to delete post relation.', ISUBMISSION_ID_LANGUAGES )
+			    ) );
+
+			    return;
+		    }
+
+		    wp_send_json( array(
+			    'status'  => true,
+			    'code'    => 'delete_successfully',
+			    'message' => __( 'Success', ISUBMISSION_ID_LANGUAGES )
+		    ) );
+
+	    } else {
+
+		    wp_send_json( array(
+			    'status'  => false,
+			    'code' => 'post_id_not_found',
+			    'message' => __( 'Post id not found.', ISUBMISSION_ID_LANGUAGES )
+		    ) );
+	    }
     }
 
 	private function get_post_id_by_place_post_id( $place_post_id ) {
