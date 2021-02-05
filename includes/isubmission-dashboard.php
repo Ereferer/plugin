@@ -32,7 +32,7 @@ if ( empty( $isubmission_current_options['isubmission_categories'] ) ) {
 
 	$dashboardTab->createOption( array(
 		'type' => 'note',
-		'desc' => '<span style="color: #FF0000;">' . __( 'Please tick at least 1 category.', ISUBMISSION_ID_LANGUAGES ) . '</span>'
+		'desc' => '<span style="color: #FF0000;">' . __( 'Veuillez cocher au moins 1 catégorie.', ISUBMISSION_ID_LANGUAGES ) . '</span>'
 	) );
 }
 
