@@ -151,6 +151,10 @@ function isubmission_get_connection_status() {
 			return isubmission_get_styled_status( $connection_statuses[ $isubmission_options['isubmission_connection_status'] ], false );
 		}
 	}
+	
+	if (!empty( $isubmission_options['isubmission_connection_status'] )) {
+        	return isubmission_get_styled_status( $isubmission_options['isubmission_connection_status'], false );
+    	}
 
 	return isubmission_get_styled_status( $connection_statuses['fail'], false );
 }
