@@ -5,7 +5,7 @@
  * @license     GPL-3.0+
  * Plugin Name: Article submit
  * Description: Vente et échange d'articles
- * Version:     1.4.3
+ * Version:     1.4.4
  * Text Domain: isubmission
  * License:     GPL-3.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -53,7 +53,7 @@ class Isubmission {
 
 	private function run_update_checker() {
 
-		require ISUBMISSION_PATH . '/lib/plugin-update-checker/plugin-update-checker.php';
+		require ISUBMISSION_PATH . 'lib/plugin-update-checker/plugin-update-checker.php';
 
 		Puc_v4_Factory::buildUpdateChecker(
 			'https://github.com/Ereferer/plugin',
