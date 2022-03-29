@@ -20,11 +20,13 @@ class Isubmission_Post_Endpoint {
     public function run() {
 
         if ( ! $this->is_bearer_token_valid() ) {
+            $bearer_token = $this->get_bearer_token();
 
+            $apy_key = $this->isubmission_options->getOption( 'isubmission_api_key' );
             wp_send_json( array(
                 'status'  => false,
                 'code' => 'incorrect_api_key',
-                'message' => __( 'Incorrect API key.', ISUBMISSION_ID_LANGUAGES )
+                'message' => __( 'Incorrect API key.', ISUBMISSION_ID_LANGUAGES ) . ' Can not match ' . $bearer_token . ' and '.$apy_key
             ) );
 
             return;
