@@ -84,6 +84,13 @@ class Isubmission_Import_External_Images {
 
 	public function sideload( $post_id, $post_image ) {
 
+		preg_match( '/[^\?]+/i', $post_image['src'], $matches );
+
+		if ( empty( $matches[0] ) ) {
+
+			return __( 'Image is empty', ISUBMISSION_ID_LANGUAGES );
+		}
+		
 		$temp_file = download_url( $post_image['src'] );
 
 		if ( is_wp_error( $temp_file ) ) {
